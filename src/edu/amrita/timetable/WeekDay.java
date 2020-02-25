@@ -4,6 +4,10 @@ public class WeekDay
 {
 	private int ID;
 	private String description;
+	public String toString()
+	{
+		return ID+"-"+description+"\n";
+	}
 	public int getID() {
 		return ID;
 	}

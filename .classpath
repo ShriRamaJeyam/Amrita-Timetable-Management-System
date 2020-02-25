@@ -54,5 +54,6 @@
 	<classpathentry kind="lib" path="D:/Programs/Extracted/optaplanner/binaries/xmlpull-1.1.3.1.jar"/>
 	<classpathentry kind="lib" path="D:/Programs/Extracted/optaplanner/binaries/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="D:/Programs/Extracted/optaplanner/binaries/xstream-1.4.11.1.jar"/>
+	<classpathentry kind="lib" path="src/edu/amrita/timetable/resources/jar/mssql-jdbc-8.2.0.jre8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

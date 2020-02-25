@@ -28,6 +28,8 @@ public class Faculty {
 	public void setDepartment(String department) {
 		Department = department;
 	}
-	
+	public String toString() {
+		return ID+" "+Name+"\n";
+	}
 
 }

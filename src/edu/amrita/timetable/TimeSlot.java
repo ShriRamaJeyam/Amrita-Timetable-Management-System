@@ -1,6 +1,7 @@
 package edu.amrita.timetable;
 public class TimeSlot 
 {
+	private int ID;
 	private int start;
 	private int end;
 	private boolean extended=false;
@@ -58,5 +59,11 @@ public class TimeSlot
 			}
 		}
 		return false; 
+	}
+	public int getID() {
+		return ID;
+	}
+	public void setID(int iD) {
+		ID = iD;
 	}
 }
