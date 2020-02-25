@@ -19,5 +19,5 @@ public class MapClass
 	public static Map<Integer,List<Room> > RoomGroup = new TreeMap<Integer,List<Room> >();
 	public static List<Lecture> LectureList=new ArrayList<Lecture>();
 	public static Map<Integer,Integer> RegToCurr=new TreeMap<Integer,Integer>(),RegToFac=new TreeMap<Integer,Integer>();
-		
+	public static int bfr=1000;
 }

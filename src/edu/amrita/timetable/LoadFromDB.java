@@ -217,15 +217,20 @@ public class LoadFromDB
 		try (Connection connection = DriverManager.getConnection(ConnectionURL)) 
 		{
 			connection.setAutoCommit(false);
-			for(Lecture e:s.getLeclst())
+			Statement stmt=connection.createStatement();
+			String sqlquery="insert into lecturesfinal(Registration,RoomID,DayListID,TimeSlotID) values ";
+			for(int i=0;i!=s.getLeclst().size();i++)
 			{
-				Statement stmt=connection.createStatement();
-				String sqlquery="insert into lecturesfinal(Registration,RoomID,DayListID,TimeSlotID) values ("+e.getRegistration()+","+e.getRoom().getID()+","+e.getWeekday().getID()+","+e.getTimeslot().getID()+")";
-				stmt.executeUpdate(sqlquery);
-				stmt.close();
+				Lecture e=s.getLeclst().get(i);
+				if(i!=0)
+					sqlquery+=",";
+				sqlquery+="("+e.getRegistration()+","+e.getRoom().getID()+","+e.getWeekday().getID()+","+e.getTimeslot().getID()+")";
 			}
+			stmt.executeUpdate(sqlquery+";");
+			stmt.close();
 			connection.commit();
 			connection.close();
+			
         }
         catch (SQLException e) 
 		{

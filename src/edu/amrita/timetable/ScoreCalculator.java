@@ -11,7 +11,7 @@ public class ScoreCalculator implements EasyScoreCalculator<Solver>
 	 public HardSoftScore calculateScore(Solver TimeTable) 
 	 {
 		 int hard=0,soft=0;
-		 List<Lecture> lst=MapClass.LectureList;
+		 List<Lecture> lst=TimeTable.leclst;
 		 Set<Integer> roomSet=new TreeSet<Integer>();
 		 for(int i=0;i!=lst.size();i++)
 		 {
@@ -44,11 +44,23 @@ public class ScoreCalculator implements EasyScoreCalculator<Solver>
 			 }
 			 else
 			 {
-				 hard-=10000;
+				 if( I.getRoom() == null)
+				 hard-=1000;
+				 if( I.getWeekday()==null)
+					 hard-=1000;
+				 if(  I.getTimeslot() ==null )
+					 hard-=1000;
 			 }
 		 }
-		 soft-=roomSet.size();
-		 System.out.println("{"+hard+","+soft+"}\n");
+		 soft-=roomSet.size()*20;
+		 MapClass.bfr--;
+		 //
+		 if(MapClass.bfr==0)
+		 {
+			 //System.out.println("bfr");
+			 MapClass.bfr=500;
+			 System.out.println("{"+hard+","+soft+"}\n");
+		 }
 		 return HardSoftScore.of(hard, soft);
 	 }
 }

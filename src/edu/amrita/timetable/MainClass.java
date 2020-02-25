@@ -12,6 +12,7 @@ public class MainClass {
 		edu.amrita.timetable.Solver problem=new edu.amrita.timetable.Solver();
 		problem.leclst=MapClass.LectureList;
 		edu.amrita.timetable.Solver solution=solver.solve(problem);
+		System.out.println("🕉️Solved🕉️");
 		LoadFromDB.store(solution);
 		System.out.println("🕉️Success🕉️");
 	}
