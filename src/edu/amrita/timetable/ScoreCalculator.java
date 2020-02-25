@@ -1,5 +1,7 @@
 package edu.amrita.timetable;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.core.impl.score.director.easy.EasyScoreCalculator;
@@ -10,11 +12,13 @@ public class ScoreCalculator implements EasyScoreCalculator<Solver>
 	 {
 		 int hard=0,soft=0;
 		 List<Lecture> lst=MapClass.LectureList;
+		 Set<Integer> roomSet=new TreeSet<Integer>();
 		 for(int i=0;i!=lst.size();i++)
 		 {
 			 Lecture I=lst.get(i);
 			 if( I.getRoom() != null && I.getWeekday() != null && I.getTimeslot() !=null )
 			 {
+				 roomSet.add(I.getRoom().getID());
 				 for(int j=i+1;j<lst.size();j++)
 				 {
 					 Lecture J=lst.get(j);
@@ -43,6 +47,7 @@ public class ScoreCalculator implements EasyScoreCalculator<Solver>
 				 hard-=10000;
 			 }
 		 }
+		 soft-=roomSet.size();
 		 System.out.println("{"+hard+","+soft+"}\n");
 		 return HardSoftScore.of(hard, soft);
 	 }
