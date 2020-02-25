@@ -218,6 +218,8 @@ public class LoadFromDB
 		{
 			connection.setAutoCommit(false);
 			Statement stmt=connection.createStatement();
+			stmt.executeUpdate("delete from lecturesfinal");
+			stmt=connection.createStatement();
 			String sqlquery="insert into lecturesfinal(Registration,RoomID,DayListID,TimeSlotID) values ";
 			for(int i=0;i!=s.getLeclst().size();i++)
 			{
