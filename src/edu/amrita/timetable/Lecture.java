@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
 import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
+@SuppressWarnings("unused")
 @PlanningEntity
 public class Lecture 
 {

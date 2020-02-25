@@ -185,7 +185,22 @@ public class LoadFromDB
 		    	   }
 		    	   rs.close();
 		    	   stmt.close();
-		    	   System.out.println(MapClass.LectureList);
+		    	   //System.out.println(MapClass.LectureList);
+		       }
+		       //Registration
+		       {
+		    	   Statement stmt=connection.createStatement();
+		    	   String sqlquery="select * from Registration;";
+		    	   ResultSet rs=stmt.executeQuery(sqlquery);
+		    	   while (rs.next()) 
+		    	   {
+		    		   MapClass.RegToCurr.put(rs.getInt("RegistrationID"), rs.getInt("CurriculumID"));
+		    		   MapClass.RegToFac.put(rs.getInt("RegistrationID"), rs.getInt("Faculty"));
+		    	   }
+		    	   rs.close();
+		    	   stmt.close();
+		    	   //System.out.println(MapClass.RegToCurr);
+		    	   //System.out.println(MapClass.RegToFac);
 		       }
 		       System.out.println("Success");
 		       connection.close();
