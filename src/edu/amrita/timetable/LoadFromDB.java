@@ -125,8 +125,48 @@ public class LoadFromDB
 		    		    }
 		    		    MapClass.WeekDayGroup.get(GID).add(MapClass.WeekDayGroup.get(ID).get(0));
 		    	   }
-		    	   System.out.println(MapClass.WeekDayGroup);
-		    	   System.out.println(MapClass.WeekDayList);
+		    	   //System.out.println(MapClass.WeekDayGroup);
+		    	   //System.out.println(MapClass.WeekDayList);
+		       }
+		       //TimeSlot and TimeSlotGroup
+		       {
+		    	   Statement stmt=connection.createStatement();
+		    	   String sqlquery="select * from TimeSlot;";
+		    	   ResultSet rs=stmt.executeQuery(sqlquery);
+		    	   while (rs.next()) 
+		    	   {
+		    		   	TimeSlot slt=new TimeSlot();
+		    		   	slt.setID(rs.getInt("TimeSlotID"));
+		    		   	slt.setStart(rs.getInt("Starter"));
+		    		   	slt.setEnd(rs.getInt("Ender"));
+		    		   	if(rs.getInt("extended")==1)
+		    		   	{
+		    		   		slt.setExtended(true);
+		    		   		slt.setEstart(rs.getInt("ExtendedStarter"));
+		    		   		slt.setEend(rs.getInt("ExtendedEnder"));
+		    		   	}
+		    		    MapClass.TimeSlotList.add(slt);
+		    		    List<TimeSlot> lst=new ArrayList<TimeSlot>();
+		    		    lst.add(slt);
+		    		    MapClass.TimeSlotGroup.put(rs.getInt("TimeSlotID"),lst);
+		    	   }
+		    	   rs.close();
+		    	   stmt.close();
+		    	   stmt=connection.createStatement();
+		    	   sqlquery="select * from TimeSlotgroupmembers;";
+		    	   rs=stmt.executeQuery(sqlquery);
+		    	   while (rs.next()) 
+		    	   {
+		    		    int ID=rs.getInt("TimeSlotID");
+		    		    int GID=rs.getInt("TimeSlotGroupID");
+		    		    if(!MapClass.TimeSlotGroup.containsKey(GID))
+		    		    {
+		    		    	MapClass.TimeSlotGroup.put(GID,new ArrayList<TimeSlot>());
+		    		    }
+		    		    MapClass.TimeSlotGroup.get(GID).add(MapClass.TimeSlotGroup.get(ID).get(0));
+		    	   }
+		    	   //System.out.println(MapClass.TimeSlotGroup);
+		    	   //System.out.println(MapClass.TimeSlotList);
 		       }
 		       System.out.println("Success");
 		       connection.close();

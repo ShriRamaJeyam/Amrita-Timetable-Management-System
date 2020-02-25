@@ -7,6 +7,15 @@ public class TimeSlot
 	private boolean extended=false;
 	private int estart=0;
 	private int eend=0;
+	public String toString() {
+		String ret="";
+		ret+="{"+ID+"}-"+"("+start+","+end;
+		if(extended)
+		{
+			ret+=" & "+estart+","+eend;
+		}
+		return ret+")\n";
+	}
 	public int getStart() {
 		return start;
 	}
