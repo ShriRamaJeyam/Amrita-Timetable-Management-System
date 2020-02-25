@@ -168,6 +168,25 @@ public class LoadFromDB
 		    	   //System.out.println(MapClass.TimeSlotGroup);
 		    	   //System.out.println(MapClass.TimeSlotList);
 		       }
+		       //Lectures
+		       {
+		    	   Statement stmt=connection.createStatement();
+		    	   String sqlquery="select * from Lectures;";
+		    	   ResultSet rs=stmt.executeQuery(sqlquery);
+		    	   while (rs.next()) 
+		    	   {
+		    		   Lecture lec=new Lecture();
+		    		   lec.setID(rs.getInt("LectureID"));
+		    		   lec.setRegistration(rs.getInt("Registration"));
+		    		   lec.setRoomSrc(rs.getInt("RoomID"));
+		    		   lec.setTimeSlotSrc(rs.getInt("TimeSlotID"));
+		    		   lec.setWeekDaySrc(rs.getInt("DayListID"));
+		    		   MapClass.LectureList.add(lec);
+		    	   }
+		    	   rs.close();
+		    	   stmt.close();
+		    	   System.out.println(MapClass.LectureList);
+		       }
 		       System.out.println("Success");
 		       connection.close();
 		}

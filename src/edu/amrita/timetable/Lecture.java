@@ -9,6 +9,10 @@ import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
 @PlanningEntity
 public class Lecture 
 {
+	public String toString() 
+	{
+		return "{"+ID+"~"+Registration+"."+RoomSrc+"-"+TimeSlotSrc+"-"+WeekDaySrc+"}\n";
+	}
 	private int ID,Registration,LectureNo,RoomSrc,TimeSlotSrc,WeekDaySrc,Parent;
 	@PlanningVariable(valueRangeProviderRefs = {"RoomRange"})
 	private Room room;

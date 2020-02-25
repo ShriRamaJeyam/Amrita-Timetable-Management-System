@@ -17,6 +17,7 @@ public class MapClass
 	public static Map<Integer,List<Curriculum> > CurriculumGroup = new TreeMap<Integer,List<Curriculum> >();
 	public static List<Room> RoomList=new ArrayList<Room>();
 	public static Map<Integer,List<Room> > RoomGroup = new TreeMap<Integer,List<Room> >();
+	public static List<Lecture> LectureList=new ArrayList<Lecture>();
 	
 		
 }
