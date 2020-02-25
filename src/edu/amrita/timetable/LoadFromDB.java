@@ -1,5 +1,6 @@
 package edu.amrita.timetable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,9 +12,10 @@ import org.drools.compiler.lang.dsl.DSLMapParser.statement_return;
 @SuppressWarnings("unused")
 public class LoadFromDB 
 {
+	private static String ConnectionURL="jdbc:sqlserver://mssqldbase.database.windows.net:1433;database=TimeTable;user=timetable@mssqldbase;password=hfr2spicy!;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
 	public static void Load()
 	{
-		String ConnectionURL="jdbc:sqlserver://mssqldbase.database.windows.net:1433;database=TimeTable;user=timetable@mssqldbase;password=hfr2spicy!;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+		
 		try (Connection connection = DriverManager.getConnection(ConnectionURL);) 
 		{
 		       //Faculty and FacultyGroup
@@ -185,7 +187,7 @@ public class LoadFromDB
 		    	   }
 		    	   rs.close();
 		    	   stmt.close();
-		    	   //System.out.println(MapClass.LectureList);
+		    	   Collections.shuffle(MapClass.LectureList);
 		       }
 		       //Registration
 		       {
@@ -202,10 +204,30 @@ public class LoadFromDB
 		    	   //System.out.println(MapClass.RegToCurr);
 		    	   //System.out.println(MapClass.RegToFac);
 		       }
-		       System.out.println("Success");
+		       //System.out.println("Success");
 		       connection.close();
 		}
 		catch (SQLException e) 
+		{
+		       e.printStackTrace();
+		}
+	}
+	public static void store(Solver s)
+	{
+		try (Connection connection = DriverManager.getConnection(ConnectionURL)) 
+		{
+			connection.setAutoCommit(false);
+			for(Lecture e:s.getLeclst())
+			{
+				Statement stmt=connection.createStatement();
+				String sqlquery="insert into lecturesfinal(Registration,RoomID,DayListID,TimeSlotID) values ("+e.getRegistration()+","+e.getRoom().getID()+","+e.getWeekday().getID()+","+e.getTimeslot().getID()+")";
+				stmt.executeUpdate(sqlquery);
+				stmt.close();
+			}
+			connection.commit();
+			connection.close();
+        }
+        catch (SQLException e) 
 		{
 		       e.printStackTrace();
 		}

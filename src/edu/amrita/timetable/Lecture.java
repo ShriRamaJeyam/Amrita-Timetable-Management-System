@@ -16,11 +16,11 @@ public class Lecture
 	}
 	private int ID,Registration,LectureNo,RoomSrc,TimeSlotSrc,WeekDaySrc,Parent;
 	@PlanningVariable(valueRangeProviderRefs = {"RoomRange"})
-	private Room room;
+	private Room room=null;
 	@PlanningVariable(valueRangeProviderRefs = {"TimeRange"})
-	private TimeSlot timeslot;
+	private TimeSlot timeslot=null;
 	@PlanningVariable(valueRangeProviderRefs = {"DayRange"})
-	private WeekDay weekday;
+	private WeekDay weekday=null;
 	@ValueRangeProvider(id = "RoomRange")
 	public List<Room> GetRoomList()
 	{

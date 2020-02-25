@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<solver>
+   <scanAnnotatedClasses>
+    <packageInclude>edu.amrita.timetable</packageInclude>
+  </scanAnnotatedClasses>
+  <scoreDirectorFactory>
+    <easyScoreCalculatorClass>edu.amrita.timetable.ScoreCalculator</easyScoreCalculatorClass>
+    <!--<initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>-->
+  </scoreDirectorFactory>
+  <termination>
+    <secondsSpentLimit>300</secondsSpentLimit>
+  </termination>
+</solver>

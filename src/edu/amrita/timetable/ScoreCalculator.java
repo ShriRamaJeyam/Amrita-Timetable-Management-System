@@ -1,4 +1,6 @@
 package edu.amrita.timetable;
+import java.util.List;
+
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.core.impl.score.director.easy.EasyScoreCalculator;
 public class ScoreCalculator implements EasyScoreCalculator<Solver> 
@@ -7,18 +9,41 @@ public class ScoreCalculator implements EasyScoreCalculator<Solver>
 	 public HardSoftScore calculateScore(Solver TimeTable) 
 	 {
 		 int hard=0,soft=0;
-		 for(Lecture lecture1:TimeTable.leclst)
+		 List<Lecture> lst=MapClass.LectureList;
+		 for(int i=0;i!=lst.size();i++)
 		 {
-			 for(Lecture lecture2:TimeTable.leclst)
+			 Lecture I=lst.get(i);
+			 if( I.getRoom() != null && I.getWeekday() != null && I.getTimeslot() !=null )
 			 {
-				 if(!(lecture1.equals(lecture2)))
+				 for(int j=i+1;j<lst.size();j++)
 				 {
-					 
+					 Lecture J=lst.get(j);
+					 if( J.getRoom() != null && J.getWeekday() != null && J.getTimeslot() !=null )
+					 {
+						 boolean overlap;
+						 overlap=(J.getWeekday().getID()==I.getWeekday().getID());
+						 overlap = overlap && ((J.getTimeslot().isOverlapping(I.getTimeslot()))||(I.getTimeslot().isOverlapping(J.getTimeslot()))); 
+						 if(overlap && J.getRoom().getID()==I.getRoom().getID() && I.getRoom().getID()!=0)
+						 {
+							 hard-=1;
+						 }
+						 if(overlap&&MapClass.RegToCurr.get(J.getRegistration())==MapClass.RegToCurr.get(I.getRegistration()) && MapClass.RegToCurr.get(J.getRegistration())!=0)
+						 {
+							 hard-=1;
+						 }
+						 if(overlap&&MapClass.RegToFac.get(J.getRegistration())==MapClass.RegToFac.get(I.getRegistration())&&MapClass.RegToFac.get(I.getRegistration())!=0)
+						 {
+							 hard-=1;
+						 }
+					 }
 				 }
 			 }
+			 else
+			 {
+				 hard-=10000;
+			 }
 		 }
-		 
-		 
+		 System.out.println("{"+hard+","+soft+"}\n");
 		 return HardSoftScore.of(hard, soft);
 	 }
 }
