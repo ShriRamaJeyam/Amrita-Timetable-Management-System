@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-
+const Globals = require('./globals').Globals;
 const sequelize = new Sequelize('ATMS', 'sa', 'NirU26@^', {
     dialect: 'mssql',
     dialectOptions:     
@@ -23,10 +23,13 @@ const datatypes = {
     generalString : Sequelize.STRING(50)
 };
 
-class Settings extends Sequelize.Model {}
-class TimeSlot extends Sequelize.Model {}
-class TimeSlotGroups extends Sequelize.Model {}
-class TimeSlotGroupMembers extends Sequelize.Model {}
+class Settings extends Sequelize.Model {};
+class TimeSlots extends Sequelize.Model {};
+class TimeSlotGroups extends Sequelize.Model {};
+class TimeSlotGroupMembers extends Sequelize.Model {};
+class Departments extends Sequelize.Model {};
+class Programs extends Sequelize.Model {};
+class Semesters extends Sequelize.Model {};
 
 Settings.init({
     SettingID:{
@@ -41,7 +44,7 @@ Settings.init({
     sequelize
 });
 
-TimeSlot.init({
+TimeSlots.init({
     starter:{
         type : Sequelize.INTEGER,
         allowNull: false,
@@ -121,7 +124,7 @@ TimeSlotGroupMembers.init({
         type : Sequelize.INTEGER,
         allowNull : false,
         references : {
-            model : TimeSlot,
+            model : TimeSlots,
             key : 'id'
         },
         unique : 'NoMultiMap'
@@ -139,8 +142,55 @@ TimeSlotGroupMembers.init({
     sequelize
 });
 
+Departments.init({
+    DepartmentName:{
+        type : datatypes.generalString,
+        unique : true,
+        allowNull:false
+    }
+},{
+    sequelize
+});
+
+Programs.init({
+    DepartmentID:{
+        type: Sequelize.INTEGER,
+        references:{
+            model:Departments,
+            key:'id'
+        },
+        unique:'NoDupProgForSameDept',
+        allowNull:false
+    },
+    ProgramName:{
+        type:datatypes.generalString,
+        unique:'NoDupProgForSameDept',
+        allowNull:false
+    }
+},{sequelize});
+
+Semesters.init({
+    ProgramID:{
+        type:Sequelize.INTEGER,
+        references:{
+            model:Programs,
+            key:'id'
+        },
+        unique:"Unique_Semester_For_Department",
+        allowNull:false
+    },
+    SemesterNumber:
+    {
+        type:Sequelize.INTEGER,
+        unique:"Unique_Semester_For_Department",
+        allowNull:false
+    }
+},{
+    sequelize
+});
+
 sequelize.sync().then(()=>{
-    console.log("Synced");
+    Globals.isDatabaseSynced = true;
 });
 
 
@@ -148,6 +198,8 @@ module.exports = {
     sequelize,
     tables:{
         Settings,
-        TimeSlot
+        TimeSlots,
+        TimeSlotGroups,
+        TimeSlotGroupMembers
     }
 };
