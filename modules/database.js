@@ -38,6 +38,16 @@ class Regions extends Sequelize.Model {};
 class Rooms extends Sequelize.Model {};
 class RoomGroups extends Sequelize.Model {};
 class RoomGroupMembers extends Sequelize.Model {};
+class Sections extends Sequelize.Model {};
+class Courses extends Sequelize.Model {};
+class SectionGroups extends Sequelize.Model {};
+class SectionGroupMembers extends Sequelize.Model {};
+class SemesterRegistrations extends Sequelize.Model {};
+class SectionRegistrations extends Sequelize.Model {};
+class FacultyPreferences extends Sequelize.Model {};
+class Lectures extends Sequelize.Model {};
+class Solutions extends Sequelize.Model {};
+class SolutionLectures extends Sequelize.Model {};
 
 Regions.init({
     Region:{
@@ -342,14 +352,289 @@ Rooms.init({
 RoomGroups.init({
     RoomGroupName:{
         type : datatypes.generalString,
+        allowNull : false,
+        unique:true
+    }
+},{
+    sequelize
+});
+
+RoomGroupMembers.init({
+    RoomID:{
+        type : Sequelize.INTEGER,
+        allowNull : false,
+        references : {
+            model : Rooms,
+            key : 'id'
+        },
+        unique : 'NoMultiMap-RG'
+    },
+    RoomGroupID:{
+        type : Sequelize.INTEGER,
+        allowNull : false,
+        references : {
+            model : RoomGroups,
+            key : 'id'
+        },
+        unique : 'NoMultiMap-RG'
+    }
+},{
+    sequelize
+});
+
+Sections.init({
+    SectionName:{
+        type: Sequelize.STRING(1),
+        unique :"NoRepeatSection",
+        allowNull: false
+    },
+    SemesterID:{
+        type : Sequelize.INTEGER,
+        references :{
+            model : Semesters,
+            key:"id"
+        },
+        unique :"NoRepeatSection",
+        allowNull: false
+    }
+},{ sequelize } );
+
+Courses.init({
+    CourseCode : {
+        type :Sequelize.STRING(10),
+        unique : true,
+        allowNull: false
+    },
+    CourseName: {
+        type : datatypes.generalString,
+        allowNull: false
+    },
+    Theorey : {
+        type : Sequelize.INTEGER,
+        validate :{
+            min: 0,
+            max: 20
+        },
+        allowNull: false
+    },
+    Lab : {
+        type : Sequelize.INTEGER,
+        validate :{
+            min: 0,
+            max: 20
+        },
+        allowNull: false
+    }
+},{sequelize});
+
+SectionGroups.init({
+    SectionGroupName:{
+        type : datatypes.generalString,
         allowNull : false
     }
 },{
     sequelize
 });
 
+SectionGroupMembers.init({
+    SectionID:{
+        type : Sequelize.INTEGER,
+        allowNull : false,
+        references : {
+            model : Sections,
+            key : 'id'
+        },
+        unique : 'NoMultiMap-SG'
+    },
+    SectionGroupID:{
+        type : Sequelize.INTEGER,
+        allowNull : false,
+        references : {
+            model : SectionGroups,
+            key : 'id'
+        },
+        unique : 'NoMultiMap-SG'
+    }
+},{
+    sequelize
+});
 
+SemesterRegistrations.init({
+    SemesterID:{
+        type : Sequelize.INTEGER,
+        unique :"single-reg-sem",
+        references : {
+            model : Semesters,
+            key:"id"
+        },
+        allowNull:false
+    },
+    CourseID:{
+        type : Sequelize.INTEGER,
+        unique :"single-reg-sem",
+        references : {
+            model : Courses,
+            key:"id"
+        },
+        allowNull:false
+    },
+    NoOfLectures:{
+        type:Sequelize.INTEGER,
+        validate: {
+            min:1,
+            max:20
+        },
+        allowNull:false
+    },
+    TimeSlot:{
+        type : Sequelize.INTEGER,
+        allowNull:false,
+        references :{
+            model : TimeSlots,
+            key : "id"
+        }
+    }
+},{sequelize});
 
+SectionRegistrations.init({
+    SectionID:{
+        type : Sequelize.INTEGER,
+        allowNull:false
+    },
+    FacultyID:{
+        type : Sequelize.INTEGER,
+        allowNull:false
+    },
+    CourseID:{
+        type : Sequelize.INTEGER,
+        references : {
+            model : Courses,
+            key:"id"
+        },
+        allowNull:false
+    },
+    Lectures:{
+        type:Sequelize.INTEGER,
+        validate: {
+            min:1,
+            max:20
+        },
+        allowNull:false
+    },
+    TimeSlot:{
+        type : Sequelize.INTEGER,
+        allowNull:false,
+        references :{
+            model : TimeSlots,
+            key : "id"
+        }
+    },
+    Generated:{
+        type : Sequelize.BOOLEAN,
+        defaultValue: false
+    },
+    Parent:{
+        type : Sequelize.INTEGER,
+        allowNull : true
+    }
+},{sequelize});
+
+FacultyPreferences.init({
+    TimeSlotID:{
+        type : Sequelize.INTEGER,
+        references :{
+            model : TimeSlots,
+            key : "id"
+        },
+        allowNull : false,
+        unique : "NoMultiPreference"
+    },
+    Preference :{
+        type : Sequelize.INTEGER,
+        validate :{
+            min : 1,
+            max : 4
+        },
+        unique : "NoMultiPreference"
+    }
+},{sequelize});
+
+Lectures.init({
+    TimeSlot : {
+        type : Sequelize.INTEGER,
+        allowNull : false
+    },
+    Faculty : {
+        type : Sequelize.INTEGER,
+        allowNull : false
+    },
+    SectionRegistration:{
+        type : Sequelize.INTEGER,
+        references : {
+            model : SectionRegistrations,
+            key : 'id' 
+        },
+        allowNull : false
+    },
+    Room : {
+        type : Sequelize.INTEGER,
+        allowNull : false
+    },
+    Day : {
+        type : Sequelize.INTEGER,
+        allowNull : false
+    },
+    Parent : { type : Sequelize.INTEGER }
+},{sequelize});
+
+Solutions.init({
+    TimeSpan : {
+        type : Sequelize.ENUM('odd','even'),
+        allowNull : false,
+    },
+    SoftViolations : {
+        type : Sequelize.TEXT
+    },
+    HardViolations : {
+        type : Sequelize.TEXT
+    }
+},{sequelize});
+
+SolutionLectures.init({
+    SolutionID : {
+        type : Sequelize.INTEGER,
+        references : {
+            model : Solutions,
+            key : 'id'
+        },
+        allowNull : false
+    },
+    TimeSlot : {
+        type : Sequelize.INTEGER,
+        allowNull : false
+    },
+    Faculty : {
+        type : Sequelize.INTEGER,
+        allowNull : false
+    },
+    SectionRegistration:{
+        type : Sequelize.INTEGER,
+        references : {
+            model : SectionRegistrations,
+            key : 'id' 
+        },
+        allowNull : false
+    },
+    Room : {
+        type : Sequelize.INTEGER,
+        allowNull : false
+    },
+    Day : {
+        type : Sequelize.INTEGER,
+        allowNull : false
+    },
+    Parent : { type : Sequelize.INTEGER }
+},{sequelize});
 
 sequelize.sync().then(()=>{
     Globals.isDatabaseSynced = true;
