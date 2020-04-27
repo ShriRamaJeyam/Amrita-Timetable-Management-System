@@ -54,6 +54,11 @@ Regions.init({
         type:datatypes.generalString,
         allowNull:false,
         unique:true
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{sequelize});
 
@@ -62,6 +67,11 @@ DayLists.init({
         type:datatypes.generalString,
         allowNull:false,
         unique:true
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{sequelize});
 
@@ -112,6 +122,11 @@ TimeSlots.init({
             min : 1,
             max : 900
         }
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{ 
     validate :{
@@ -148,6 +163,11 @@ TimeSlotGroups.init({
     TimeSlotGroupName:{
         type : datatypes.generalString,
         allowNull : false
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{
     sequelize
@@ -181,6 +201,11 @@ Departments.init({
         type : datatypes.generalString,
         unique : true,
         allowNull:false
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{
     sequelize
@@ -200,6 +225,11 @@ Programs.init({
         type:datatypes.generalString,
         unique:'NoDupProgForSameDept',
         allowNull:false
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{sequelize});
 
@@ -218,6 +248,11 @@ Semesters.init({
         type:Sequelize.INTEGER,
         unique:"Unique_Semester_For_Department",
         allowNull:false
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{
     sequelize
@@ -266,6 +301,11 @@ Teachers.init({
         validate:{
             is:Globals.RegEx.Password
         }
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{
     sequelize
@@ -275,6 +315,11 @@ TeacherGroups.init({
     TeacherGroupName:{
         type : datatypes.generalString,
         allowNull : false
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{
     sequelize
@@ -343,6 +388,11 @@ Rooms.init({
     RoomDescription :
     {
         type : datatypes.generalString
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
     
 },{
@@ -354,6 +404,11 @@ RoomGroups.init({
         type : datatypes.generalString,
         allowNull : false,
         unique:true
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{
     sequelize
@@ -396,6 +451,11 @@ Sections.init({
         },
         unique :"NoRepeatSection",
         allowNull: false
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{ sequelize } );
 
@@ -424,6 +484,11 @@ Courses.init({
             max: 20
         },
         allowNull: false
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{sequelize});
 
@@ -431,6 +496,11 @@ SectionGroups.init({
     SectionGroupName:{
         type : datatypes.generalString,
         allowNull : false
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{
     sequelize
@@ -493,6 +563,11 @@ SemesterRegistrations.init({
             model : TimeSlots,
             key : "id"
         }
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{sequelize});
 
@@ -536,6 +611,11 @@ SectionRegistrations.init({
     Parent:{
         type : Sequelize.INTEGER,
         allowNull : true
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{sequelize});
 
@@ -597,6 +677,11 @@ Solutions.init({
     },
     HardViolations : {
         type : Sequelize.TEXT
+    },
+    Depreciated:{
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue : false
     }
 },{sequelize});
 
@@ -639,12 +724,34 @@ SolutionLectures.init({
 sequelize.sync().then(()=>{
     Globals.isDatabaseSynced = true;
 });
+
 module.exports = {
     sequelize,
     tables:{
         Settings,
         TimeSlots,
         TimeSlotGroups,
-        TimeSlotGroupMembers
+        TimeSlotGroupMembers,
+        Departments,
+        Programs,
+        Semesters,
+        Teachers,
+        TeacherGroups,
+        TeacherGroupMembers,
+        DayLists,
+        Regions,
+        Rooms,
+        RoomGroups,
+        RoomGroupMembers,
+        Sections,
+        Courses,
+        SectionGroups,
+        SectionGroupMembers,
+        SemesterRegistrations,
+        SectionRegistrations,
+        FacultyPreferences,
+        Lectures,
+        Solutions,
+        SolutionLectures
     }
 };
