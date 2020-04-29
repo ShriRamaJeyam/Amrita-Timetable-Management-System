@@ -123,6 +123,11 @@ TimeSlots.init({
             max : 900
         }
     },
+    description:{
+        type : datatypes.generalString,
+        unique:true,
+        allowNull : false
+    },
     Depreciated:{
         type: Sequelize.BOOLEAN,
         allowNull:false,
@@ -162,6 +167,7 @@ TimeSlots.init({
 TimeSlotGroups.init({
     TimeSlotGroupName:{
         type : datatypes.generalString,
+        unique:true,
         allowNull : false
     },
     Depreciated:{
@@ -212,18 +218,9 @@ Departments.init({
 });
 
 Programs.init({
-    DepartmentID:{
-        type: Sequelize.INTEGER,
-        references:{
-            model:Departments,
-            key:'id'
-        },
-        unique:'NoDupProgForSameDept',
-        allowNull:false
-    },
     ProgramName:{
         type:datatypes.generalString,
-        unique:'NoDupProgForSameDept',
+        unique:true,
         allowNull:false
     },
     Depreciated:{
@@ -240,13 +237,13 @@ Semesters.init({
             model:Programs,
             key:'id'
         },
-        unique:"Unique_Semester_For_Department",
+        unique:"Unique_Semester_For_Program",
         allowNull:false
     },
     SemesterNumber:
     {
         type:Sequelize.INTEGER,
-        unique:"Unique_Semester_For_Department",
+        unique:"Unique_Semester_For_Program",
         allowNull:false
     },
     Depreciated:{
@@ -451,6 +448,15 @@ Sections.init({
         },
         unique :"NoRepeatSection",
         allowNull: false
+    },
+    DepartmentID:{
+        type: Sequelize.INTEGER,
+        references:{
+            model:Departments,
+            key:'id'
+        },
+        unique:'NoRepeatSection',
+        allowNull:false
     },
     Depreciated:{
         type: Sequelize.BOOLEAN,
@@ -660,17 +666,18 @@ Lectures.init({
         type : Sequelize.INTEGER,
         allowNull : false
     },
-    Day : {
-        type : Sequelize.INTEGER,
+    DaySource : {
+        type : Sequelize.TEXT,
         allowNull : false
     },
     Parent : { type : Sequelize.INTEGER }
 },{sequelize});
 
 Solutions.init({
-    TimeSpan : {
-        type : Sequelize.ENUM('odd','even'),
-        allowNull : false,
+    SolutionName : {
+        type : datatypes.generalString,
+        unique: true,
+        allowNull : false
     },
     SoftViolations : {
         type : Sequelize.TEXT
