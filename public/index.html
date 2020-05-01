@@ -1,13 +1,97 @@
+<!DOCTYPE html>
 <html>
-
 <head>
-  <title>Express</title>
-  <link rel="stylesheet" href="/stylesheets/style.css">
+    <style>
+        #demo{outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+        .string { color: green; }
+        .number { color: darkorange; }
+        .boolean { color: blue; }
+        .null { color: magenta; }
+        .key { color: red; }
+    input[type=text] , textarea {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: medium;
+      }
+      #data{
+          height: 300px;
+      }
+      
+      button {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      
+      input[type=submit]:hover {
+        background-color: #45a049;
+      }
+      
+      div {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+      }
+      </style>
 </head>
-
 <body>
-  <h1>Express</h1>
-  <p>Welcome to Express</p>
-</body>
 
+<h2>Api tester</h2>
+<input type="text" id="url" />
+<br>
+<textarea id="data"></textarea>
+<br>
+<button type="button" onclick="loadDoc()">Request data</button>
+<br>
+<p id="status"></p>
+<br>
+<pre id="demo"></pre>
+
+<script>
+    function syntaxHighlight(json) {
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'key';
+            } else {
+                cls = 'string';
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+        } else if (/null/.test(match)) {
+            cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+    });
+}
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4) {
+      document.getElementById("demo").innerHTML = syntaxHighlight(JSON.stringify(JSON.parse(this.responseText),undefined,2));
+      document.getElementById("status").innerHTML = this.status;
+    }
+  };
+  xhttp.open("POST",document.getElementById("url").value , true);
+  xhttp.setRequestHeader("Content-Type","application/json");
+  var StrData = document.getElementById("data").value;
+  eval("var z ={"+StrData+"};");
+  console.log(z);
+  xhttp.send(JSON.stringify(z));
+}
+</script>
+
+</body>
 </html>
