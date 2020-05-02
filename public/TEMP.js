@@ -1,11 +1,11 @@
 
 //TimeSlots,
-//Departments,
-//Programs,
+//Departments, //
+//Programs, //
 //Semesters,
 //Teachers,
-//DayLists,
-//Regions,
+//DayLists, //
+//Regions, //
 //Rooms,
 //Sections,
 //Courses,
