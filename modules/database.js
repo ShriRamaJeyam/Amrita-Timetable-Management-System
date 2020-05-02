@@ -48,6 +48,8 @@ class FacultyPreferences extends Sequelize.Model {};
 class Lectures extends Sequelize.Model {};
 class Solutions extends Sequelize.Model {};
 class SolutionLectures extends Sequelize.Model {};
+class Electives extends Sequelize.Model {};
+class ElectiveCourses extends Sequelize.Model {};
 
 Regions.init({
     Region:{
@@ -170,6 +172,11 @@ TimeSlotGroups.init({
         unique:true,
         allowNull : false
     },
+    AskFacultyPref:{
+        type:Sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue: false
+    },
     Depreciated:{
         type: Sequelize.BOOLEAN,
         allowNull:false,
@@ -268,7 +275,7 @@ Teachers.init({
         },
         allowNull:false
     },
-    PhoneNumber:{
+    /*PhoneNumber:{
         type:Sequelize.STRING(10),
         allowNull:false,
         unique:true,
@@ -298,7 +305,7 @@ Teachers.init({
         validate:{
             is:Globals.RegEx.Password
         }
-    },
+    },*/
     Depreciated:{
         type: Sequelize.BOOLEAN,
         allowNull:false,
@@ -391,7 +398,6 @@ Rooms.init({
         allowNull:false,
         defaultValue : false
     }
-    
 },{
     sequelize
 });
@@ -483,6 +489,9 @@ Courses.init({
         },
         allowNull: false
     },
+    TheoreySlot:{
+        type : Sequelize.INTEGER
+    },
     Lab : {
         type : Sequelize.INTEGER,
         validate :{
@@ -545,6 +554,15 @@ SemesterRegistrations.init({
         },
         allowNull:false
     },
+    DepartmentID:{
+        type: Sequelize.INTEGER,
+        references:{
+            model:Departments,
+            key:'id'
+        },
+        unique:"single-reg-sem",
+        allowNull:false
+    },
     CourseID:{
         type : Sequelize.INTEGER,
         unique :"single-reg-sem",
@@ -565,10 +583,6 @@ SemesterRegistrations.init({
     TimeSlot:{
         type : Sequelize.INTEGER,
         allowNull:false,
-        references :{
-            model : TimeSlots,
-            key : "id"
-        }
     },
     Depreciated:{
         type: Sequelize.BOOLEAN,
@@ -605,18 +619,10 @@ SectionRegistrations.init({
     TimeSlot:{
         type : Sequelize.INTEGER,
         allowNull:false,
-        references :{
-            model : TimeSlots,
-            key : "id"
-        }
     },
     Generated:{
         type : Sequelize.BOOLEAN,
         defaultValue: false
-    },
-    Parent:{
-        type : Sequelize.INTEGER,
-        allowNull : true
     },
     Depreciated:{
         type: Sequelize.BOOLEAN,
@@ -624,6 +630,45 @@ SectionRegistrations.init({
         defaultValue : false
     }
 },{sequelize});
+
+Electives.init({
+    ElectiveName:{
+        type : datatypes.generalString,
+        unique: true
+    },
+    SectionGroupID: Sequelize.INTEGER
+},{
+    sequelize 
+});
+
+ElectiveCourses.init({
+    ElectiveID:{
+        type : Sequelize.INTEGER,
+        allowNull:false,
+        references:{
+            model:Electives,
+            key:"id"
+        }
+    },
+    FacultyID:{
+        type : Sequelize.INTEGER,
+        allowNull:false
+    },
+    LabFacultyID:{
+        type : Sequelize.INTEGER,
+        allowNull:false
+    },
+    CourseID:{
+        type : Sequelize.INTEGER,
+        references : {
+            model : Courses,
+            key:"id"
+        },
+        allowNull:false
+    },
+},{ 
+    sequelize
+});
 
 FacultyPreferences.init({
     TimeSlotID:{
@@ -654,12 +699,12 @@ Lectures.init({
         type : Sequelize.INTEGER,
         allowNull : false
     },
-    SectionRegistration:{
+    SectionID:{
         type : Sequelize.INTEGER,
-        references : {
-            model : SectionRegistrations,
-            key : 'id' 
-        },
+        allowNull : false
+    },
+    CourseID:{
+        type : Sequelize.INTEGER,
         allowNull : false
     },
     Room : {
@@ -669,6 +714,9 @@ Lectures.init({
     DaySource : {
         type : Sequelize.TEXT,
         allowNull : false
+    },
+    Region:{
+        type:Sequelize.INTEGER
     },
     Parent : { type : Sequelize.INTEGER }
 },{sequelize});
@@ -709,12 +757,12 @@ SolutionLectures.init({
         type : Sequelize.INTEGER,
         allowNull : false
     },
-    SectionRegistration:{
+    SectionID:{
         type : Sequelize.INTEGER,
-        references : {
-            model : SectionRegistrations,
-            key : 'id' 
-        },
+        allowNull : false
+    },
+    CourseID:{
+        type : Sequelize.INTEGER,
         allowNull : false
     },
     Room : {

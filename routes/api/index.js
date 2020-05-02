@@ -7,7 +7,15 @@ fs.readdir("./routes/api",function(err,items){
     items.forEach(dir => {
         if(dir !== "index.js")
         {
-            router.use("/"+dir,require("./"+dir+"/index"));
+            try
+            {
+                router.use("/"+dir,require("./"+dir+"/index"));
+            }
+            catch(ex)
+            {
+                
+            }
+            
         }
     });
 })

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var database = require("../../../modules/database");
-var Table = database.tables.Departments;
+var Table = database.tables.Regions;
 
 router.post("/create",async function(req,res){
     try
