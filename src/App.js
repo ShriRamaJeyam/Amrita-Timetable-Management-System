@@ -1,7 +1,8 @@
 import React from 'react';
 import { Typography, Box } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import Router from "./pages/Router"
+import Router from "./pages/Router";
+import ErrorBoundary from "./pages/ErrorBoundary"
 import { Switch,Route,Redirect,BrowserRouter } from "react-router-dom";
 function App() {
   return (
@@ -19,7 +20,9 @@ function App() {
         </Grid>
       </div>
       <div style={{width:"95%",height:"100%", padding:"3%"}}>
-        <Router />
+        <ErrorBoundary>
+          <Router />
+        </ErrorBoundary>
       </div>
     </div>
   );

@@ -11,9 +11,11 @@ import {
     TableRow,
     Paper,
     Checkbox,
-    Typography
+    Typography,
+    FormControlLabel
 } from "@material-ui/core";
 import * as axios_org from "axios";
+import { appURL } from '../../components/appURL';
 const axios= axios_org.default;
 class ListingRegions extends React.Component
 {
@@ -41,14 +43,16 @@ class ListingRegions extends React.Component
         const { data,showDepreciated } = this.state;
         return (
             <Grid container spacing={3} direction="column">
-                <Grid item spacing={1} direction="column">
-                    <Grid alignItems="center" alignContent="center">
-                        <Button color="primary" variant="contained" href="create">Create New</Button>
-                        <Checkbox checked={showDepreciated} onChange={this.showDepreciatedHandler} color="primary"></Checkbox>
-                        <Typography component="span"> Do you want to show depreciated records?</Typography>
-                    </Grid>
+                <Grid item spacing={3} direction="row">
+                        <Grid>
+                            <Button color="primary" variant="contained" href={appURL.Regions.create}>Create New</Button>
+                        </Grid> 
+                        <Grid> 
+                            <FormControlLabel control={
+                                <Checkbox checked={showDepreciated} onChange={this.showDepreciatedHandler} color="primary" /> 
+                            } label="Do you want to show depreciated records?" />
+                        </Grid>  
                 </Grid>
-                
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
@@ -70,7 +74,7 @@ class ListingRegions extends React.Component
                                             <TableCell>{entry.Region}</TableCell>
                                             <TableCell>{(entry.Depreciated?"❌":"✅")}</TableCell>
                                             <TableCell>
-                                                <Button href={entry.id+"/edit"} variant="contained" color="primary">Edit</Button>
+                                                <Button href={appURL.Regions.list+"/"+entry.id+"/edit"} variant="contained" color="primary">Edit</Button>
                                             </TableCell>
                                         </TableRow>
                                     );
