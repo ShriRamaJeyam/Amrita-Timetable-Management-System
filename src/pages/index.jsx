@@ -7,6 +7,9 @@ export default function Homepage()
             <Grid item>
                 <Grid container direction="column" justify="flex-start" alignItems="flex-start" spacing={1}>
                     <Grid item>
+                        <Button color="primary"  variant="contained" href="/Settings/">Settings</Button>
+                    </Grid>
+                    <Grid item>
                         <Button color="primary" variant="contained" href="/Regions/">Regions</Button>
                     </Grid>
                     <Grid item>

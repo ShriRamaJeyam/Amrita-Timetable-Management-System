@@ -9,6 +9,7 @@ import ListingDepartments from "./Departments/list";
 import CreateDepartments from "./Departments/create"
 import ListingDayLists from "./DayLists/list";
 import CreateDayLists from "./DayLists/create"
+import Settings from "./Settings/index"
 
 const Router = () => {
     return (
@@ -26,6 +27,7 @@ const Router = () => {
             <Route path="/DayLists/:_id/edit" component={() => {return (<CreateDayLists edit={true} />);}} />
             <Route path="/DayLists/create" component={() => {return (<CreateDayLists />);}} />
             <Route path="/DayLists" component={() => {return (<ListingDayLists />);}} />
+            <Route path="/Settings" component={()=>{return (<Settings />);}} />
             <Route path="/" component={()=>{return (<Homepage />);}} />
             <Redirect to="/" />
         </Switch>

@@ -23,5 +23,9 @@ export const apiURL = {
         edit: hostname + "/api/DayLists/edit",
         create: hostname + "/api/DayLists/create",
         get: hostname + "/api/DayLists/get",
+    },
+    Settings:{
+        get: hostname + "/api/Settings/get",
+        set: hostname + "/api/Settings/set"
     }
 }
