@@ -10,6 +10,10 @@ import CreateDepartments from "./Departments/create"
 import ListingDayLists from "./DayLists/list";
 import CreateDayLists from "./DayLists/create"
 import Settings from "./Settings/index"
+import ListingTeachers from "./Teachers/list";
+import CreateTeachers from "./Teachers/create"
+import ListingTimeSlots from "./TimeSlots/list";
+import CreateTimeSlots  from "./TimeSlots/create"
 
 const Router = () => {
     return (
@@ -27,6 +31,12 @@ const Router = () => {
             <Route path="/DayLists/:_id/edit" component={() => {return (<CreateDayLists edit={true} />);}} />
             <Route path="/DayLists/create" component={() => {return (<CreateDayLists />);}} />
             <Route path="/DayLists" component={() => {return (<ListingDayLists />);}} />
+            <Route path="/Teachers/:_id/edit" component={() => {return (<CreateTeachers edit={true} />);}} />
+            <Route path="/Teachers/create" component={() => {return (<CreateTeachers />);}} />
+            <Route path="/Teachers" component={() => {return (<ListingTeachers />);}} />
+            <Route path="/TimeSlots/:_id/edit" component={() => {return (<CreateTimeSlots edit={true} />);}} />
+            <Route path="/TimeSlots/create" component={() => {return (<CreateTimeSlots />);}} />
+            <Route path="/TimeSlots" component={() => {return (<ListingTimeSlots />);}} />
             <Route path="/Settings" component={()=>{return (<Settings />);}} />
             <Route path="/" component={()=>{return (<Homepage />);}} />
             <Redirect to="/" />

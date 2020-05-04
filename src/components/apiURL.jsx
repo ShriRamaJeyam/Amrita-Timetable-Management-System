@@ -27,5 +27,17 @@ export const apiURL = {
     Settings:{
         get: hostname + "/api/Settings/get",
         set: hostname + "/api/Settings/set"
+    },
+    Teachers:{
+        list: hostname + "/api/Teachers/list",
+        edit: hostname + "/api/Teachers/edit",
+        create: hostname + "/api/Teachers/create",
+        get: hostname + "/api/Teachers/get",
+    },
+    TimeSlots:{
+        list: hostname + "/api/TimeSlots/list",
+        edit: hostname + "/api/TimeSlots/edit",
+        create: hostname + "/api/TimeSlots/create",
+        get: hostname + "/api/TimeSlots/get",
     }
 }
