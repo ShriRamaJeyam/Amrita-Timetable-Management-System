@@ -1,11 +1,12 @@
-
-//TimeSlots,
-//Departments, //
-//Programs, //
-//Semesters,
-//Teachers,
 //DayLists, //
 //Regions, //
+//Departments, //
+//Programs, //
+
+//TimeSlots,
+//Semesters,
+//Teachers,
+
 //Rooms,
 //Sections,
 //Courses,
@@ -14,7 +15,7 @@
 Solutions,
 SolutionLectures,
 
-Settings,
+//Settings,//
 
 Electives,
 ElectiveCourses
@@ -30,4 +31,4 @@ TimeSlotGroupMembers,
 TeacherGroups,
 TeacherGroupMembers,
 SectionGroups,
-SectionGroupMembers,
+SectionGroupMembers

@@ -95,7 +95,7 @@ TimeSlots.init({
         type : Sequelize.INTEGER,
         allowNull: false,
         validate :{
-            min : 1,
+            min : 0,
             max : 900
         }
     },
@@ -103,7 +103,7 @@ TimeSlots.init({
         type : Sequelize.INTEGER,
         allowNull: false,
         validate :{
-            min : 1,
+            min : 0,
             max : 900
         }
     },
@@ -114,14 +114,14 @@ TimeSlots.init({
     startBreak:{
         type : Sequelize.INTEGER,
         validate :{
-            min : 1,
+            min : 0,
             max : 900
         }
     },
     endBreak:{
         type : Sequelize.INTEGER,
         validate :{
-            min : 1,
+            min : 0,
             max : 900
         }
     },

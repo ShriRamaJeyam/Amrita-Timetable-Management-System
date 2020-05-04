@@ -6,12 +6,18 @@ var Table = database.tables.TimeSlots;
 router.post("/create",async function(req,res){
     try
     {
-       var result = await Table.create({ ...(req.body) });
-       res.json(result);
+      if(!req.body.hasBreak)
+      {
+        req.body.startBreak = req.body.endBreak = null;
+      }
+      console.log(req.body);
+      var result = await Table.create({ ...(req.body) });
+      res.json(result);
     }
     catch(ex)
     {
-        res.status(400).json({error : ex.toString()});
+      console.log(ex.toString());
+      res.status(400).json({error : ex.toString()});
     }
 });
 
@@ -19,9 +25,13 @@ router.post("/edit",async function(req,res){
   const {id} = req.body;
   try
   {
-     var record = await Table.findOne({ where : { id } });
-     var result = await record.update({ ...(req.body) });
-     res.json(result);
+    if(!req.body.hasBreak)
+    {
+      req.body.startBreak = req.body.endBreak = null;
+    }
+    var record = await Table.findOne({ where : { id } });
+    var result = await record.update({ ...(req.body) });
+    res.json(result);
   }
   catch(ex)
   {
