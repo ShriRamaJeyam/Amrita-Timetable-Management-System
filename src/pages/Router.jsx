@@ -14,6 +14,8 @@ import ListingTeachers from "./Teachers/list";
 import CreateTeachers from "./Teachers/create"
 import ListingTimeSlots from "./TimeSlots/list";
 import CreateTimeSlots  from "./TimeSlots/create"
+import ListingRooms from "./Rooms/list";
+import CreateRooms  from "./Rooms/create"
 
 const Router = () => {
     return (
@@ -37,6 +39,9 @@ const Router = () => {
             <Route path="/TimeSlots/:_id/edit" component={() => {return (<CreateTimeSlots edit={true} />);}} />
             <Route path="/TimeSlots/create" component={() => {return (<CreateTimeSlots />);}} />
             <Route path="/TimeSlots" component={() => {return (<ListingTimeSlots />);}} />
+            <Route path="/Rooms/:_id/edit" component={() => {return (<CreateRooms edit={true} />);}} />
+            <Route path="/Rooms/create" component={() => {return (<CreateRooms />);}} />
+            <Route path="/Rooms" component={() => {return (<ListingRooms />);}} />
             <Route path="/Settings" component={()=>{return (<Settings />);}} />
             <Route path="/" component={()=>{return (<Homepage />);}} />
             <Redirect to="/" />

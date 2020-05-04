@@ -22,5 +22,9 @@ export const appURL = {
     TimeSlots:{
         list:  "/TimeSlots",
         create:  "/TimeSlots/create",
+    },
+    Rooms:{
+        list:  "/Rooms",
+        create:  "/Rooms/create",
     }
 }

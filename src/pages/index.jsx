@@ -32,7 +32,7 @@ export default function Homepage()
                         <Button fullWidth={true} color="primary"  variant="contained" href="/Settings/">Teacher Groups</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
-                        <Button fullWidth={true} color="primary" variant="contained" href="/Regions/">Rooms</Button>
+                        <Button fullWidth={true} color="primary" variant="contained" href="/Rooms/">Rooms</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
                         <Button fullWidth={true} color="primary" variant="contained" href="/Programs/">Room Groups</Button>

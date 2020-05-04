@@ -39,5 +39,11 @@ export const apiURL = {
         edit: hostname + "/api/TimeSlots/edit",
         create: hostname + "/api/TimeSlots/create",
         get: hostname + "/api/TimeSlots/get",
+    },
+    Rooms:{
+        list: hostname + "/api/Rooms/list",
+        edit: hostname + "/api/Rooms/edit",
+        create: hostname + "/api/Rooms/create",
+        get: hostname + "/api/Rooms/get",
     }
 }
