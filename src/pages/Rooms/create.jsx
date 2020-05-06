@@ -108,7 +108,7 @@ class CreateRooms extends React.Component
     {
         const { edit } = this.props;
         const { apiFulfilled,data,error,errorMessage,apiHits,regionList } = this.state;
-        if( apiHits !== 1 )
+        if( apiHits !== 1 || (edit && !apiFulfilled) )
         {
             return null;
         }
@@ -174,10 +174,7 @@ class CreateRooms extends React.Component
                     label="Is this depreciated" />
                 </Grid>
                 <Grid item>
-                    {
-                        (!edit || apiFulfilled) &&
-                        <Button color="primary" variant="contained" onClick={this.save}>Save</Button> 
-                    }
+                    <Button color="primary" variant="contained" onClick={this.save}>Save</Button>
                 </Grid>
             </Grid>
         );

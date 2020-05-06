@@ -41,7 +41,7 @@ export default function Homepage()
                         <Button fullWidth={true} color="primary" variant="contained" href="/TimeSlots/">TimeSlots</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
-                        <Button  fullWidth={true} color="primary"  variant="contained" href="/DayLists/">TimeSlot Groups</Button>
+                        <Button  fullWidth={true} color="primary"  variant="contained" href="/TimeSlotGroups/">TimeSlot Groups</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
                         <Button fullWidth={true} color="primary"  variant="contained" href="/Teachers/">Sections</Button>

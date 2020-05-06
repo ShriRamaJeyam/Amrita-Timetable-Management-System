@@ -26,5 +26,9 @@ export const appURL = {
     Rooms:{
         list:  "/Rooms",
         create:  "/Rooms/create",
+    },
+    TimeSlotGroups:{
+        list:  "/TimeSlotGroups",
+        create:  "/TimeSlotGroups/create",
     }
 }

@@ -16,6 +16,8 @@ import ListingTimeSlots from "./TimeSlots/list";
 import CreateTimeSlots  from "./TimeSlots/create"
 import ListingRooms from "./Rooms/list";
 import CreateRooms  from "./Rooms/create"
+import ListingTimeSlotGroups from "./TimeSlotGroups/list";
+import CreateTimeSlotGroups  from "./TimeSlotGroups/create";
 
 const Router = () => {
     return (
@@ -42,6 +44,9 @@ const Router = () => {
             <Route path="/Rooms/:_id/edit" component={() => {return (<CreateRooms edit={true} />);}} />
             <Route path="/Rooms/create" component={() => {return (<CreateRooms />);}} />
             <Route path="/Rooms" component={() => {return (<ListingRooms />);}} />
+            <Route path="/TimeSlotGroups/:_id/edit" component={() => {return (<CreateTimeSlotGroups edit={true} />);}} />
+            <Route path="/TimeSlotGroups/create" component={() => {return (<CreateTimeSlotGroups />);}} />
+            <Route path="/TimeSlotGroups" component={() => {return (<ListingTimeSlotGroups />);}} />
             <Route path="/Settings" component={()=>{return (<Settings />);}} />
             <Route path="/" component={()=>{return (<Homepage />);}} />
             <Redirect to="/" />
