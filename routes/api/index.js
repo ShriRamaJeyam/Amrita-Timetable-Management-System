@@ -13,7 +13,7 @@ fs.readdir("./routes/api",function(err,items){
             }
             catch(ex)
             {
-                
+                console.log(ex);
             }
             
         }
