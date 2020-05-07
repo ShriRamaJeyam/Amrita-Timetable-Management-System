@@ -1,3 +1,12 @@
+var tbls = ["TeacherGroups"];
+var tmp = {};
+tbls.forEach(tbl => {
+    tmp[tbl] = {
+        list : `/${tbl}`,
+        create : `/${tbl}/create`
+    };
+
+});
 export const appURL = {
     Regions:{
         list:  "/Regions",
@@ -30,5 +39,7 @@ export const appURL = {
     TimeSlotGroups:{
         list:  "/TimeSlotGroups",
         create:  "/TimeSlotGroups/create",
-    }
+    },
+    ...tmp
 }
+

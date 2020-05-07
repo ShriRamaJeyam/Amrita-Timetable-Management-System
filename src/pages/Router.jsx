@@ -18,6 +18,10 @@ import ListingRooms from "./Rooms/list";
 import CreateRooms  from "./Rooms/create"
 import ListingTimeSlotGroups from "./TimeSlotGroups/list";
 import CreateTimeSlotGroups  from "./TimeSlotGroups/create";
+import TeacherGroups from  "./TeacherGroups/index";
+
+const tableMap = {};
+tableMap["TeacherGroups"] = TeacherGroups ;
 
 const Router = () => {
     return (
@@ -47,6 +51,16 @@ const Router = () => {
             <Route path="/TimeSlotGroups/:_id/edit" component={() => {return (<CreateTimeSlotGroups edit={true} />);}} />
             <Route path="/TimeSlotGroups/create" component={() => {return (<CreateTimeSlotGroups />);}} />
             <Route path="/TimeSlotGroups" component={() => {return (<ListingTimeSlotGroups />);}} />
+            {
+                ["TeacherGroups"].map((tbl,idx) => {
+                    const { Create, Listing } = tableMap[tbl];
+                    return ([
+                        <Route path={"/"+tbl+"/:_id/edit"} component={() => {return (<Create edit={true} />);}} />,
+                        <Route path={"/"+tbl+"/create"} component={() => {return (<Create />);}} />,
+                        <Route path={ "/" + tbl } component={() => {return (<Listing />);}} />,
+                    ]);
+                })
+            }
             <Route path="/Settings" component={()=>{return (<Settings />);}} />
             <Route path="/" component={()=>{return (<Homepage />);}} />
             <Redirect to="/" />

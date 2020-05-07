@@ -1,4 +1,14 @@
 const hostname = "http://localhost:4000";
+var tbls = ["TeacherGroups"];
+var tmp = {};
+tbls.forEach(tbl => {
+    tmp[tbl] = {
+        list: hostname + `/api/${tbl}/list`,
+        edit: hostname + `/api/${tbl}/edit`,
+        create: hostname + `/api/${tbl}/create`,
+        get: hostname + `/api/${tbl}/get`,
+    };
+});
 export const apiURL = {
     Regions:{
         list: hostname + "/api/Regions/list",
@@ -51,5 +61,6 @@ export const apiURL = {
         edit: hostname + "/api/TimeSlotGroups/edit",
         create: hostname + "/api/TimeSlotGroups/create",
         get: hostname + "/api/TimeSlotGroups/get",
-    }
+    },
+    ...tmp
 }

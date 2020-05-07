@@ -23,22 +23,16 @@ class ListingTimeSlotGroups extends React.Component
         super(props)
         this.state = {
             apiHits:0,
-            regionMap:{},
             showDepreciated:false,
             data: []
         };
         axios.post(apiURL.TimeSlotGroups.list,{}).then(result => {
+            
             if(result.data)
             {
                 this.setState({data:result.data});
             }
-        });
-        axios.post(apiURL.Regions.list).then(result => {
-            let regionMap = this.state.regionMap;
-            result.data.forEach(itm =>{
-                regionMap[itm.id] = itm.Region;
-            });
-            this.setState({regionMap});
+            this.apiHit();
         });
         this.showDepreciatedHandler = this.showDepreciatedHandler.bind(this);   
     }
@@ -53,7 +47,7 @@ class ListingTimeSlotGroups extends React.Component
     render()
     {
         const { data,showDepreciated,basetime,apiHits,regionMap } = this.state;
-        if(apiHits==1)
+        if(apiHits!==1)
         {
             return null;
         }
