@@ -397,6 +397,13 @@ Rooms.init({
         type: Sequelize.BOOLEAN,
         allowNull:false,
         defaultValue : false
+    },
+    RoomDetail:{
+        type : Sequelize.VIRTUAL,
+        get()
+        {
+            return `${this.Wing}-${this.FloorNo}${("0"+this.RoomNo).slice(-2)}`;
+        }
     }
 },{
     sequelize
