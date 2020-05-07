@@ -34,7 +34,7 @@ import { appURL } from "../../components/appURL";
 import { apiURL } from "../../components/apiURL";
 
 const axios= axios_org.default;
-const table = "TeacherGroups"
+const table = "Sections"
 const api = apiURL[table];
 const app = appURL[table];
 
@@ -60,10 +60,13 @@ class Create extends React.Component
             apiFulfilled:false,
             error:false,
             errorMessage:"",
-            teacherList:[],
+            semesterList:[],
+            departmentList:[],
+            programMap:{},
             data : {    
-                name:"",
-                data:[],
+                SemesterID:null,
+                DepartmentID:null,
+                SectionName:"",
                 Depreciated:false
             }
         };
@@ -84,8 +87,16 @@ class Create extends React.Component
         this.apiHit = this.apiHit.bind(this);
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.save = this.save.bind(this);
-        axios.post(apiURL.Teachers.list).then(result => {
-            this.setState({ teacherList : result.data });
+        axios.post(apiURL.Semesters.list).then(result => {
+            this.setState({ roomList : result.data });
+            this.apiHit();
+        });
+        axios.post(apiURL.Departments.list).then(result => {
+            this.setState({ roomList : result.data });
+            this.apiHit();
+        });
+        axios.post(apiURL.Programs.list).then(result => {
+            this.setState({ roomList : result.data });
             this.apiHit();
         });
     }
@@ -94,10 +105,19 @@ class Create extends React.Component
             apiHits : state.apiHits + 1
         }));
     };
-    onChangeHandler = (property,value) => {
-        let data = this.state.data;
-        data[property] = value;
-        this.setState({data});
+    onChangeHandler = (property,value,root) => {
+        if(root)
+        {
+            var temp ={};
+            temp[property]=value;
+            this.setState(temp);
+        }
+        else
+        {
+            let data = this.state.data;
+            data[property] = value;
+            this.setState({data});
+        }
     };
     save = () => {
         const { edit } = this.props;
@@ -123,8 +143,8 @@ class Create extends React.Component
     render()
     {
         const { edit } = this.props;
-        const { apiFulfilled,data,error,errorMessage,apiHits,teacherList } = this.state;
-        if( apiHits !== 1 || (edit && !apiFulfilled) )
+        const { apiFulfilled,data,error,errorMessage,apiHits,roomList, regionMap, showRoomNames } = this.state;
+        if( apiHits !== 2 || (edit && !apiFulfilled) )
         {
             return null;
         }
@@ -141,15 +161,15 @@ class Create extends React.Component
                     )
                 }
                 <Grid sm={12} fullWidth={true} item>
-                    <TextField fullWidth={true} value={data.name} label="Teacher Group Name" onChange={(event) => { this.onChangeHandler("name",event.target.value)}} variant="filled"></TextField>
+                    <TextField fullWidth={true} value={data.name} label="Room Group Name" onChange={(event) => { this.onChangeHandler("name",event.target.value)}} variant="filled"></TextField>
                 </Grid>
                 <Grid sm={12} fullWidth={true} item>
                     <FormControl fullWidth={true}  variant="filled">
-                        <InputLabel>Teachers List</InputLabel>
+                        <InputLabel>Room List</InputLabel>
                         <Select value={data.data} multiline multiple onChange={(event) => { this.onChangeHandler("data",event.target.value);}}>
-                            {teacherList.map(itm =>{
+                            {roomList.map(itm =>{
                                 return(
-                                    <MenuItem value={itm.id}>{itm.TeacherName}</MenuItem>
+                                    <MenuItem value={itm.id}>{`${regionMap[itm.RegionID]} ${itm.RoomDetail} ${(showRoomNames? itm.RoomDescription:"")}  `}</MenuItem>
                                 );
                             })}
                         </Select>
@@ -159,6 +179,11 @@ class Create extends React.Component
                     <FormControlLabel control = {
                     <RedCheckbox checked={data.Depreciated} onChange={(event) => { this.onChangeHandler("Depreciated",event.target.checked) } }></RedCheckbox>}
                     label="Is this depreciated" />
+                </Grid>
+                <Grid item>
+                    <FormControlLabel control = {
+                    <Checkbox color="primary" checked={data.showRoomNames} onChange={(event) => { this.onChangeHandler("showRoomNames",event.target.checked,true) } }></Checkbox>}
+                    label="Do you want to show room names?" />
                 </Grid>
                 <Grid item>
                     <Button color="primary" variant="contained" onClick={this.save}>Save</Button>
@@ -217,7 +242,7 @@ class Listing extends React.Component
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Teacher Group Name</TableCell>
+                                <TableCell>Room Group Name</TableCell>
                                 <TableCell>Live</TableCell>
                                 <TableCell>Edit</TableCell>
                             </TableRow>
@@ -231,7 +256,7 @@ class Listing extends React.Component
                                     }
                                     return (
                                         <TableRow>
-                                            <TableCell>{entry.TeacherGroupName}</TableCell>
+                                            <TableCell>{entry.RoomGroupName}</TableCell>
                                             <TableCell>{(entry.Depreciated?"❌":"✅")}</TableCell>
                                             <TableCell>
                                                 <Button href={app.list+"/"+entry.id+"/edit"} variant="contained" color="primary">Edit</Button>

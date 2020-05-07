@@ -34,7 +34,7 @@ import { appURL } from "../../components/appURL";
 import { apiURL } from "../../components/apiURL";
 
 const axios= axios_org.default;
-const table = "TeacherGroups"
+const table = "Semesters"
 const api = apiURL[table];
 const app = appURL[table];
 
@@ -60,10 +60,10 @@ class Create extends React.Component
             apiFulfilled:false,
             error:false,
             errorMessage:"",
-            teacherList:[],
+            programList:[],
             data : {    
-                name:"",
-                data:[],
+                ProgramID:null,
+                SemesterNumber:null,
                 Depreciated:false
             }
         };
@@ -74,7 +74,7 @@ class Create extends React.Component
                 axios.post(api.get,{id:id}).then(result => {
                     if(result.data.length !== 0)
                     {
-                        let data = result.data;
+                        let data = result.data[0];
                         this.setState({data,apiFulfilled:true});
                     }
                 }
@@ -84,8 +84,8 @@ class Create extends React.Component
         this.apiHit = this.apiHit.bind(this);
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.save = this.save.bind(this);
-        axios.post(apiURL.Teachers.list).then(result => {
-            this.setState({ teacherList : result.data });
+        axios.post(apiURL.Programs.list).then(result => {
+            this.setState({ programList : result.data });
             this.apiHit();
         });
     }
@@ -94,10 +94,19 @@ class Create extends React.Component
             apiHits : state.apiHits + 1
         }));
     };
-    onChangeHandler = (property,value) => {
-        let data = this.state.data;
-        data[property] = value;
-        this.setState({data});
+    onChangeHandler = (property,value,root) => {
+        if(root)
+        {
+            var temp ={};
+            temp[property]=value;
+            this.setState(temp);
+        }
+        else
+        {
+            let data = this.state.data;
+            data[property] = value;
+            this.setState({data});
+        }
     };
     save = () => {
         const { edit } = this.props;
@@ -123,7 +132,8 @@ class Create extends React.Component
     render()
     {
         const { edit } = this.props;
-        const { apiFulfilled,data,error,errorMessage,apiHits,teacherList } = this.state;
+        const { apiFulfilled,data,error,errorMessage,apiHits, programList } = this.state;
+        console.log(data);
         if( apiHits !== 1 || (edit && !apiFulfilled) )
         {
             return null;
@@ -140,16 +150,16 @@ class Create extends React.Component
                         </Grid>
                     )
                 }
-                <Grid sm={12} fullWidth={true} item>
-                    <TextField fullWidth={true} value={data.name} label="Teacher Group Name" onChange={(event) => { this.onChangeHandler("name",event.target.value)}} variant="filled"></TextField>
+                <Grid sm={2} fullWidth={true} item>
+                    <TextField type="number" fullWidth={true} value={data.SemesterNumber} label="Semester" onChange={(event) => { this.onChangeHandler("SemesterNumber",event.target.value)}} variant="filled"></TextField>
                 </Grid>
-                <Grid sm={12} fullWidth={true} item>
+                <Grid sm={2} fullWidth={true} item>
                     <FormControl fullWidth={true}  variant="filled">
-                        <InputLabel>Teachers List</InputLabel>
-                        <Select value={data.data} multiline multiple onChange={(event) => { this.onChangeHandler("data",event.target.value);}}>
-                            {teacherList.map(itm =>{
+                        <InputLabel>Program</InputLabel>
+                        <Select value={data.ProgramID}  onChange={(event) => { this.onChangeHandler("ProgramID",event.target.value);}}>
+                            {programList.map(itm =>{
                                 return(
-                                    <MenuItem value={itm.id}>{itm.TeacherName}</MenuItem>
+                                    <MenuItem value={itm.id}>{itm.ProgramName}</MenuItem>
                                 );
                             })}
                         </Select>
@@ -175,7 +185,8 @@ class Listing extends React.Component
         this.state = {
             apiHits:0,
             showDepreciated:false,
-            data: []
+            data: [],
+            programMap:{}
         };
         axios.post(api.list,{}).then(result => {
             if(result.data)
@@ -184,7 +195,16 @@ class Listing extends React.Component
                 this.apiHit();
             }
         });
-        this.showDepreciatedHandler = this.showDepreciatedHandler.bind(this);   
+        axios.post(apiURL.Programs.list).then(result => {
+            const { programMap } = this.state;
+            result.data.forEach(pgm => {
+                programMap[pgm.id] = pgm.ProgramName;
+            });
+            this.setState(programMap);
+            this.apiHit();
+        });
+        this.showDepreciatedHandler = this.showDepreciatedHandler.bind(this); 
+        this.apiHit = this.apiHit.bind(this);
     }
     showDepreciatedHandler = (event) => {
         this.setState({showDepreciated : event.target.checked});
@@ -196,8 +216,8 @@ class Listing extends React.Component
     };
     render()
     {
-        const { data,showDepreciated,apiHits} = this.state;
-        if(apiHits!==1)
+        const { data,showDepreciated,apiHits, programMap} = this.state;
+        if(apiHits!==2)
         {
             return null;
         }
@@ -217,7 +237,8 @@ class Listing extends React.Component
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Teacher Group Name</TableCell>
+                                <TableCell>Program</TableCell>
+                                <TableCell>Semester</TableCell>
                                 <TableCell>Live</TableCell>
                                 <TableCell>Edit</TableCell>
                             </TableRow>
@@ -231,7 +252,8 @@ class Listing extends React.Component
                                     }
                                     return (
                                         <TableRow>
-                                            <TableCell>{entry.TeacherGroupName}</TableCell>
+                                            <TableCell>{programMap[entry.ProgramID]}</TableCell>
+                                            <TableCell>{entry.SemesterNumber}</TableCell>
                                             <TableCell>{(entry.Depreciated?"❌":"✅")}</TableCell>
                                             <TableCell>
                                                 <Button href={app.list+"/"+entry.id+"/edit"} variant="contained" color="primary">Edit</Button>

@@ -22,12 +22,15 @@ export default function Homepage()
                         <Button color="primary"  variant="contained" href="/DayLists/">DayLists</Button>
                     </Grid>
                     <Grid item>
-                        <Button color="primary"  variant="contained" href="/Teachers/">Teachers</Button>
+                        <Button color="primary"  variant="contained" href="/Semesters/">Semesters</Button>
                     </Grid>
                 </Grid>
             </Grid>
             <Grid item fullWidth={true} sm={2}>
                 <Grid fullWidth={true} container direction="column"  justify="flex-start" alignItems="flex-start" spacing={1}>
+                    <Grid item>
+                        <Button color="primary"  variant="contained" href="/Teachers/">Teachers</Button>
+                    </Grid>
                     <Grid item fullWidth={true}>
                         <Button fullWidth={true} color="primary"  variant="contained" href="/TeacherGroups/">Teacher Groups</Button>
                     </Grid>
@@ -43,13 +46,13 @@ export default function Homepage()
                     <Grid item fullWidth={true}>
                         <Button  fullWidth={true} color="primary"  variant="contained" href="/TimeSlotGroups/">TimeSlot Groups</Button>
                     </Grid>
-                    <Grid item fullWidth={true}>
-                        <Button fullWidth={true} color="primary"  variant="contained" href="/Teachers/">Sections</Button>
-                    </Grid>
                 </Grid>
             </Grid>
             <Grid item fullWidth={true} sm={2}>
                 <Grid fullWidth={true} container direction="column"  justify="flex-start" alignItems="flex-start" spacing={1}>
+                    <Grid item fullWidth={true}>
+                        <Button fullWidth={true} color="primary"  variant="contained" href="/Sections/">Sections</Button>
+                    </Grid>
                     <Grid item fullWidth={true}>
                         <Button fullWidth={true} color="primary"  variant="contained" href="/Settings/">Section Groups</Button>
                     </Grid>
@@ -65,13 +68,14 @@ export default function Homepage()
                     <Grid item fullWidth={true}>
                         <Button  fullWidth={true} color="primary"  variant="contained" href="/DayLists/">Section Registrations</Button>
                     </Grid>
-                    <Grid item fullWidth={true}>
-                        <Button fullWidth={true} color="primary"  variant="contained" href="/Teachers/">Lectures</Button>
-                    </Grid>
+                    
                 </Grid>
             </Grid>
             <Grid item fullWidth={true} sm={2}>
                 <Grid fullWidth={true} container direction="column"  justify="flex-start" alignItems="flex-start" spacing={1}>
+                    <Grid item fullWidth={true}>
+                        <Button fullWidth={true} color="primary"  variant="contained" href="/Teachers/">Lectures</Button>
+                    </Grid>
                     <Grid item fullWidth={true}>
                         <Button fullWidth={true} color="primary"  variant="contained" href="/Settings/">Faculty Preferences</Button>
                     </Grid>

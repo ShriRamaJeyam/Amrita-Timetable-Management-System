@@ -1,5 +1,5 @@
 const hostname = "http://localhost:4000";
-var tbls = ["TeacherGroups"];
+var tbls = ["TeacherGroups","RoomGroups","Sections","Semesters"];
 var tmp = {};
 tbls.forEach(tbl => {
     tmp[tbl] = {

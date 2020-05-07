@@ -19,9 +19,15 @@ import CreateRooms  from "./Rooms/create"
 import ListingTimeSlotGroups from "./TimeSlotGroups/list";
 import CreateTimeSlotGroups  from "./TimeSlotGroups/create";
 import TeacherGroups from  "./TeacherGroups/index";
-
-const tableMap = {};
-tableMap["TeacherGroups"] = TeacherGroups ;
+import RoomGroups from  "./RoomGroups/index";
+import Sections from './Sections/index';
+import Semesters from "./Semesters/index";
+const tableMap = { 
+    TeacherGroups,
+    RoomGroups,
+    Sections,
+    Semesters
+};
 
 const Router = () => {
     return (
@@ -52,7 +58,7 @@ const Router = () => {
             <Route path="/TimeSlotGroups/create" component={() => {return (<CreateTimeSlotGroups />);}} />
             <Route path="/TimeSlotGroups" component={() => {return (<ListingTimeSlotGroups />);}} />
             {
-                ["TeacherGroups"].map((tbl,idx) => {
+                ["TeacherGroups","RoomGroups","Sections","Semesters"].map((tbl,idx) => {
                     const { Create, Listing } = tableMap[tbl];
                     return ([
                         <Route path={"/"+tbl+"/:_id/edit"} component={() => {return (<Create edit={true} />);}} />,
