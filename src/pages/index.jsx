@@ -54,7 +54,7 @@ export default function Homepage()
                         <Button fullWidth={true} color="primary"  variant="contained" href="/Sections/">Sections</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
-                        <Button fullWidth={true} color="primary"  variant="contained" href="/Settings/">Section Groups</Button>
+                        <Button fullWidth={true} color="primary"  variant="contained" href="/SectionGroups/">Section Groups</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
                         <Button fullWidth={true} color="primary" variant="contained" href="/Regions/">Courses</Button>

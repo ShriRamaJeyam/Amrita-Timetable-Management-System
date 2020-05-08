@@ -92,7 +92,7 @@ class CreateTeachers extends React.Component
         return (
             <Grid container direction="column" spacing={2} >
                 <Grid item>
-                    <TextField fullWidth={true} value={this.state.data.TeacherName} label="Teacher Name" onChange={this.onChangeTeacher} variant="filled"></TextField>
+                    <TextField fullWidth={true} value={this.state.data.TeacherName} label="Teacher Name" onChange={this.onChangeTeacher} variant="filled" />
                 </Grid>
                 <Grid item>
                     <FormControl fullWidth={true} variant="filled">
