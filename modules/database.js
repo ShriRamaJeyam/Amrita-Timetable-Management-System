@@ -765,6 +765,7 @@ module.exports = {
         FacultyPreferences,
         Lectures,
         Solutions,
-        SolutionLectures
+        SolutionLectures,
+        Electives
     }
 };
