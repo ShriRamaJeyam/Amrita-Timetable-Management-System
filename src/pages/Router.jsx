@@ -25,13 +25,15 @@ import Semesters from "./Semesters/index";
 import SectionGroups from "./SectionGroups/index";
 import Courses from "./Courses/index";
 import SemesterRegistrations from "./SemesterRegistrations/index"
+import Electives from "./Electives/index"
 const tableMap = { 
     TeacherGroups,
     RoomGroups,
     Sections,
     Semesters,
     SectionGroups,
-    Courses
+    Courses,
+    Electives
 };
 
 const Router = () => {
@@ -64,7 +66,7 @@ const Router = () => {
             <Route path="/TimeSlotGroups" component={() => {return (<ListingTimeSlotGroups />);}} />
             <Route path="/SemesterRegistrations" component={() => {return (<SemesterRegistrations />);}} />
             {
-                ["TeacherGroups","RoomGroups","Sections","Semesters","SectionGroups","Courses"].map((tbl,idx) => {
+                ["TeacherGroups","RoomGroups","Sections","Semesters","SectionGroups","Courses","Electives"].map((tbl,idx) => {
                     const { Create, Listing } = tableMap[tbl];
                     return ([
                         <Route path={"/"+tbl+"/:_id/edit"} component={() => {return (<Create edit={true} />);}} />,

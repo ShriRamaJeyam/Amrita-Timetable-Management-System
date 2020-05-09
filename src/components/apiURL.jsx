@@ -62,6 +62,13 @@ export const apiURL = {
         create: hostname + "/api/TimeSlotGroups/create",
         get: hostname + "/api/TimeSlotGroups/get",
     },
+    Electives:{
+        list: hostname + "/api/Electives/list",
+        edit: hostname + "/api/Electives/edit",
+        create: hostname + "/api/Electives/create",
+        get: hostname + "/api/Electives/get",
+        delete: hostname +"/api/Electives/delete"
+    },
     SemesterRegistrations:{
         edit : hostname + "/api/SemReg/edit",
         get : hostname + "/api/SemReg/get"
