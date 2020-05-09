@@ -1,5 +1,5 @@
 const hostname = "http://localhost:4000";
-var tbls = ["TeacherGroups","RoomGroups","Sections","Semesters","SectionGroups"];
+var tbls = ["TeacherGroups","RoomGroups","Sections","Semesters","SectionGroups","Courses"];
 var tmp = {};
 tbls.forEach(tbl => {
     tmp[tbl] = {
@@ -61,6 +61,10 @@ export const apiURL = {
         edit: hostname + "/api/TimeSlotGroups/edit",
         create: hostname + "/api/TimeSlotGroups/create",
         get: hostname + "/api/TimeSlotGroups/get",
+    },
+    SemesterRegistrations:{
+        edit : hostname + "/api/SemReg/edit",
+        get : hostname + "/api/SemReg/get"
     },
     ...tmp
 }

@@ -57,13 +57,13 @@ export default function Homepage()
                         <Button fullWidth={true} color="primary"  variant="contained" href="/SectionGroups/">Section Groups</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
-                        <Button fullWidth={true} color="primary" variant="contained" href="/Regions/">Courses</Button>
+                        <Button fullWidth={true} color="primary" variant="contained" href="/Courses/">Courses</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
                         <Button fullWidth={true} color="primary" variant="contained" href="/Programs/">Electives</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
-                        <Button fullWidth={true} color="primary" variant="contained" href="/Departments/">Semester Registrations</Button>
+                        <Button fullWidth={true} color="primary" variant="contained" href="/SemesterRegistrations/">Semester Registrations</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
                         <Button  fullWidth={true} color="primary"  variant="contained" href="/DayLists/">Section Registrations</Button>

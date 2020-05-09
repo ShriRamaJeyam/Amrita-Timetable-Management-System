@@ -1,4 +1,4 @@
-var tbls = ["TeacherGroups","RoomGroups","Sections","Semesters","SectionGroups"];
+var tbls = ["TeacherGroups","RoomGroups","Sections","Semesters","SectionGroups","Courses"];
 var tmp = {};
 tbls.forEach(tbl => {
     tmp[tbl] = {
