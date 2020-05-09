@@ -497,7 +497,8 @@ Courses.init({
         allowNull: false
     },
     TheoreySlot:{
-        type : Sequelize.INTEGER
+        type : Sequelize.INTEGER,
+        allowNull: false
     },
     Lab : {
         type : Sequelize.INTEGER,
@@ -505,6 +506,10 @@ Courses.init({
             min: 0,
             max: 20
         },
+        allowNull: false
+    },
+    LabSlot:{
+        type : Sequelize.INTEGER,
         allowNull: false
     },
     Depreciated:{
@@ -579,23 +584,6 @@ SemesterRegistrations.init({
         },
         allowNull:false
     },
-    NoOfLectures:{
-        type:Sequelize.INTEGER,
-        validate: {
-            min:1,
-            max:20
-        },
-        allowNull:false
-    },
-    TimeSlot:{
-        type : Sequelize.INTEGER,
-        allowNull:false,
-    },
-    Depreciated:{
-        type: Sequelize.BOOLEAN,
-        allowNull:false,
-        defaultValue : false
-    }
 },{sequelize});
 
 SectionRegistrations.init({
@@ -626,15 +614,6 @@ SectionRegistrations.init({
     TimeSlot:{
         type : Sequelize.INTEGER,
         allowNull:false,
-    },
-    Generated:{
-        type : Sequelize.BOOLEAN,
-        defaultValue: false
-    },
-    Depreciated:{
-        type: Sequelize.BOOLEAN,
-        allowNull:false,
-        defaultValue : false
     }
 },{sequelize});
 
@@ -643,38 +622,24 @@ Electives.init({
         type : datatypes.generalString,
         unique: true
     },
-    SectionGroupID: Sequelize.INTEGER
+    TheoreySlot:{
+        type : Sequelize.INTEGER,
+        allowNull : false
+    },
+    LabSlot:{
+        type : Sequelize.INTEGER,
+        allowNull : false
+    },
+    SectionGroupID : {
+        type : Sequelize.INTEGER,
+        allowNull : false
+    },
+    CoursesList:{
+        type : Sequelize.TEXT,
+        allowNull : false
+    }
 },{
     sequelize 
-});
-
-ElectiveCourses.init({
-    ElectiveID:{
-        type : Sequelize.INTEGER,
-        allowNull:false,
-        references:{
-            model:Electives,
-            key:"id"
-        }
-    },
-    FacultyID:{
-        type : Sequelize.INTEGER,
-        allowNull:false
-    },
-    LabFacultyID:{
-        type : Sequelize.INTEGER,
-        allowNull:false
-    },
-    CourseID:{
-        type : Sequelize.INTEGER,
-        references : {
-            model : Courses,
-            key:"id"
-        },
-        allowNull:false
-    },
-},{ 
-    sequelize
 });
 
 FacultyPreferences.init({
@@ -697,37 +662,6 @@ FacultyPreferences.init({
     }
 },{sequelize});
 
-Lectures.init({
-    TimeSlot : {
-        type : Sequelize.INTEGER,
-        allowNull : false
-    },
-    Faculty : {
-        type : Sequelize.INTEGER,
-        allowNull : false
-    },
-    SectionID:{
-        type : Sequelize.INTEGER,
-        allowNull : false
-    },
-    CourseID:{
-        type : Sequelize.INTEGER,
-        allowNull : false
-    },
-    Room : {
-        type : Sequelize.INTEGER,
-        allowNull : false
-    },
-    DaySource : {
-        type : Sequelize.TEXT,
-        allowNull : false
-    },
-    Region:{
-        type:Sequelize.INTEGER
-    },
-    Parent : { type : Sequelize.INTEGER }
-},{sequelize});
-
 Solutions.init({
     SolutionName : {
         type : datatypes.generalString,
@@ -739,6 +673,9 @@ Solutions.init({
     },
     HardViolations : {
         type : Sequelize.TEXT
+    },
+    Suceeded:{
+        type:Sequelize.BOOLEAN
     },
     Depreciated:{
         type: Sequelize.BOOLEAN,
@@ -756,10 +693,6 @@ SolutionLectures.init({
         },
         allowNull : false
     },
-    TimeSlot : {
-        type : Sequelize.INTEGER,
-        allowNull : false
-    },
     Faculty : {
         type : Sequelize.INTEGER,
         allowNull : false
@@ -770,17 +703,35 @@ SolutionLectures.init({
     },
     CourseID:{
         type : Sequelize.INTEGER,
+    },
+    TimeSlotSource : {
+        type : Sequelize.INTEGER,
         allowNull : false
+    },
+    RoomSource : {
+        type : Sequelize.INTEGER,
+        allowNull : false
+    },
+    DaySource : {
+        type : Sequelize.INTEGER,
+        allowNull : false
+    },
+    TimeSlot : {
+        type : Sequelize.INTEGER
     },
     Room : {
-        type : Sequelize.INTEGER,
-        allowNull : false
+        type : Sequelize.INTEGER
     },
     Day : {
-        type : Sequelize.INTEGER,
-        allowNull : false
+        type : Sequelize.INTEGER
     },
-    Parent : { type : Sequelize.INTEGER }
+    Locked : {
+        type : Sequelize.BOOLEAN,
+        defaultValue : false
+    },
+    Parent : { 
+        type : Sequelize.INTEGER 
+    }
 },{sequelize});
 
 sequelize.sync().then(()=>{
