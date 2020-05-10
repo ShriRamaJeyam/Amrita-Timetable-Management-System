@@ -113,6 +113,11 @@ class Create extends React.Component
                 url:"SectionGroups",
                 type:"both",
                 field:"SectionGroupName"
+            },
+            {
+                url:"RoomGroups",
+                type:"both",
+                field:"RoomGroupName"
             }
         ].forEach(req =>{
             axios.post(apiURL[req.url].list,{}).then(result => {
@@ -184,11 +189,12 @@ class Create extends React.Component
         });
     };
     add = () =>{
-        const {theoreyteacher,labteacher,course} = this.state;
-        if( theoreyteacher !== undefined && labteacher !== undefined && course !== undefined)
+        const {theoreyteacher,labteacher,course,labrooms,theoreyrooms} = this.state;
+        console.log()
+        if( theoreyteacher !== undefined && labteacher !== undefined && course !== undefined && labrooms!== undefined && theoreyrooms !== undefined)
         {
             const { data } = this.state;
-            data.CoursesList.push({theoreyteacher,labteacher,course});
+            data.CoursesList.push({theoreyteacher,labteacher,course,labrooms,theoreyrooms});
             this.setState({data});
         }
         else{
@@ -205,7 +211,7 @@ class Create extends React.Component
         const { edit } = this.props;
         const { state } = this;
         const { apiFulfilled,data,error,errorMessage,apiHits } = this.state;
-        if( apiHits !== 5 || (edit && !apiFulfilled) )
+        if( apiHits !== 6 || (edit && !apiFulfilled) )
         {
             return null;
         }
@@ -278,7 +284,7 @@ class Create extends React.Component
                     label="Is this depreciated" />
                 </Grid>
                 <Grid container spacing={2} direction="row" item alignContent="center" alignItems="center">
-                    <Grid sm={4} fullWidth={true} item>
+                    <Grid sm={3} fullWidth={true} item>
                         <FormControl fullWidth={true}  variant="filled">
                             <InputLabel>Course</InputLabel>
                             <Select value={state.course} onChange={(event) => { this.onChangeHandler("course",event.target.value,true);}}>
@@ -293,7 +299,7 @@ class Create extends React.Component
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid sm={3} fullWidth={true} item>
+                    <Grid sm={2} fullWidth={true} item>
                         <FormControl fullWidth={true}  variant="filled">
                             <InputLabel>Theorey Teacher(s)</InputLabel>
                             <Select value={state.theoreyteacher} onChange={(event) => { this.onChangeHandler("theoreyteacher",event.target.value,true);}}>
@@ -316,7 +322,7 @@ class Create extends React.Component
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid sm={3} fullWidth={true} item>
+                    <Grid sm={2} fullWidth={true} item>
                         <FormControl fullWidth={true}  variant="filled">
                             <InputLabel>Lab Teacher(s)</InputLabel>
                             <Select value={state.labteacher} onChange={(event) => { this.onChangeHandler("labteacher",event.target.value,true);}}>
@@ -339,6 +345,37 @@ class Create extends React.Component
                             </Select>
                         </FormControl>
                     </Grid>
+                    <Grid sm={2} fullWidth={true} item>
+                        <FormControl fullWidth={true}  variant="filled">
+                            <InputLabel>Theorey Rooms</InputLabel>
+                            <Select value={state.theoryrooms} onChange={(event) => { this.onChangeHandler("theoreyrooms",event.target.value,true);}}>
+                                {state.RoomGroupsList.map(itm =>{
+                                    //filters
+                                    if(itm.Depreciated)
+                                        return null;
+                                    return(
+                                        <MenuItem value={itm.id}>{`${itm.RoomGroupName}`}</MenuItem>
+                                    );
+                                })}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid sm={2} fullWidth={true} item>
+                        <FormControl fullWidth={true}  variant="filled">
+                            <InputLabel>Lab Rooms</InputLabel>
+                            <Select value={state.labrooms} onChange={(event) => { this.onChangeHandler("labrooms",event.target.value,true);}}>
+                                {state.RoomGroupsList.map(itm =>{
+                                    //filters
+                                    if(itm.Depreciated)
+                                        return null;
+                                    return(
+                                        <MenuItem value={itm.id}>{`${itm.RoomGroupName}`}</MenuItem>
+                                    );
+                                })}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    
                     <Grid item>
                         <Button  color="primary" variant="contained" onClick={this.add}>Add</Button>
                     </Grid>
@@ -351,6 +388,8 @@ class Create extends React.Component
                                     <TableCell>Course</TableCell>
                                     <TableCell>Theorey Teacher</TableCell>
                                     <TableCell>Lab Teacher</TableCell>
+                                    <TableCell>Theorey Room</TableCell>
+                                    <TableCell>Lab Room</TableCell>
                                     <TableCell>Delete</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -362,6 +401,8 @@ class Create extends React.Component
                                                 <TableCell>{state.CoursesMap[entry.course]}</TableCell>
                                                 <TableCell>{FullTeacherMap[entry.theoreyteacher]}</TableCell>
                                                 <TableCell>{FullTeacherMap[entry.labteacher]}</TableCell>
+                                                <TableCell>{state.RoomGroupsMap[entry.theoreyrooms]}</TableCell>
+                                                <TableCell>{state.RoomGroupsMap[entry.labrooms]}</TableCell>
                                                 <TableCell>
                                                     <Button onClick={() => { this.remove(index); }} variant="contained" color="primary">Delete</Button>
                                                 </TableCell>
