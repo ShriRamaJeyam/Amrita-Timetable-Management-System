@@ -9,9 +9,11 @@ const { sequelize } = database;
 const { Sections, Semesters, SemesterRegistrations, Courses, Departments } = database.tables;
 router.post("/generate",async function(req,res){
   var transaction = await sequelize.transaction();
+  var Ans = [];
+  var Err=[];
   try
   {
-    var Ans = [];
+    
     
     var depts = await Departments.findAll({ where : { Depreciated:false } });
     var LiveDeptList = depts.map((sem) => {
@@ -63,6 +65,7 @@ router.post("/generate",async function(req,res){
       if(Array.isArray(CrsLstMap[key]))
       CrsLstMap[key].forEach(crs =>{
          var CrsData = CourseMap[crs];
+         Err.push(CrsData);
          if(CrsData.Theorey !== 0)
          {
               Ans.push({
@@ -70,7 +73,7 @@ router.post("/generate",async function(req,res){
                 FacultyID: 0,
                 RoomGroupID: 0,
                 CourseID:crs,
-                TimeSlot: CrsData.TheorySlot,
+                TimeSlot: CrsData.TheoreySlot,
                 Lectures: CrsData.Theorey
             });
          }
@@ -87,13 +90,14 @@ router.post("/generate",async function(req,res){
          }
       });
     });
-    await Table.destroy({ transaction });
+    await Table.destroy({ truncate:true,transaction });
     await Table.bulkCreate(Ans,{transaction});
-    res.json({status:"ok"});
+    await transaction.commit();
+    res.json({status:"ok",Err});
   }
   catch(ex)
   {
-    res.status(400).json({error : ex.toString()});
+    res.status(400).json({error : ex.toString(),Err});
     if (transaction) 
     {
       await transaction.rollback();
