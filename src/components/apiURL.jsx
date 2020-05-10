@@ -1,5 +1,5 @@
 const hostname = "http://localhost:4000";
-var tbls = ["TeacherGroups","RoomGroups","Sections","Semesters","SectionGroups","Courses"];
+var tbls = ["TeacherGroups","RoomGroups","Sections","Semesters","SectionGroups","Courses","Solutions"];
 var tmp = {};
 tbls.forEach(tbl => {
     tmp[tbl] = {
@@ -76,6 +76,13 @@ export const apiURL = {
         get: hostname + "/api/SectionRegistrations/get",
         delete: hostname +"/api/SectionRegistrations/delete",
         generate : hostname + "/api/SectionRegistrations/generate"
+    },
+    SolutionLectures:{
+        list: hostname + "/api/SolutionLectures/list",
+        edit: hostname + "/api/SolutionLectures/edit",
+        create: hostname + "/api/SolutionLectures/create",
+        get: hostname + "/api/SolutionLectures/get",
+        delete: hostname +"/api/SolutionLectures/delete",
     },
     SemesterRegistrations:{
         edit : hostname + "/api/SemReg/edit",

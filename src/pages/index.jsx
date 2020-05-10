@@ -74,7 +74,10 @@ export default function Homepage()
             <Grid item fullWidth={true} sm={2}>
                 <Grid fullWidth={true} container direction="column"  justify="flex-start" alignItems="flex-start" spacing={1}>
                     <Grid item fullWidth={true}>
-                        <Button fullWidth={true} color="primary"  variant="contained" href="/Teachers/">Lectures</Button>
+                        <Button fullWidth={true} color="primary"  variant="contained" href="/Solutions/">Solutions</Button>
+                    </Grid>
+                    <Grid item fullWidth={true}>
+                        <Button fullWidth={true} color="primary"  variant="contained" href="/SolutionLectures/">Solution Lectures</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
                         <Button fullWidth={true} color="primary"  variant="contained" href="/Settings/">Faculty Preferences</Button>
