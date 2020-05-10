@@ -38,7 +38,7 @@ export default function Homepage()
                         <Button fullWidth={true} color="primary" variant="contained" href="/Rooms/">Rooms</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
-                        <Button fullWidth={true} color="primary" variant="contained" href="/Programs/">Room Groups</Button>
+                        <Button fullWidth={true} color="primary" variant="contained" href="/RoomGroups/">Room Groups</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
                         <Button fullWidth={true} color="primary" variant="contained" href="/TimeSlots/">TimeSlots</Button>
