@@ -593,7 +593,11 @@ SectionRegistrations.init({
     },
     FacultyID:{
         type : Sequelize.INTEGER,
-        allowNull:false
+        allowNull : false
+    },
+    RoomGroupID:{
+        type : Sequelize.INTEGER,
+        allowNull : false
     },
     CourseID:{
         type : Sequelize.INTEGER,
