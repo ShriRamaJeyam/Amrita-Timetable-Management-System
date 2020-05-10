@@ -69,6 +69,14 @@ export const apiURL = {
         get: hostname + "/api/Electives/get",
         delete: hostname +"/api/Electives/delete"
     },
+    SectionRegistrations:{
+        list: hostname + "/api/SectionRegistrations/list",
+        edit: hostname + "/api/SectionRegistrations/edit",
+        create: hostname + "/api/SectionRegistrations/create",
+        get: hostname + "/api/SectionRegistrations/get",
+        delete: hostname +"/api/SectionRegistrations/delete",
+        generate : hostname + "/api/SectionRegistrations/generate"
+    },
     SemesterRegistrations:{
         edit : hostname + "/api/SemReg/edit",
         get : hostname + "/api/SemReg/get"

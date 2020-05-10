@@ -66,7 +66,7 @@ export default function Homepage()
                         <Button fullWidth={true} color="primary" variant="contained" href="/SemesterRegistrations/">Semester Registrations</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
-                        <Button  fullWidth={true} color="primary"  variant="contained" href="/DayLists/">Section Registrations</Button>
+                        <Button  fullWidth={true} color="primary"  variant="contained" href="/SectionRegistrations/">Section Registrations</Button>
                     </Grid>
                     
                 </Grid>
