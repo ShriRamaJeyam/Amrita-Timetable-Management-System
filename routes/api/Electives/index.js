@@ -40,7 +40,7 @@ router.post("/get",async function(req,res){
      var record = await Table.findOne({ where : { ...params } });
      var result = deepClone(record);
      result.CoursesList = JSON.parse(result.CoursesList);
-     res.json(record);
+     res.json(result);
   }
   catch(ex)
   {
