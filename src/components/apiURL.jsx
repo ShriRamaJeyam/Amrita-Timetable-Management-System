@@ -10,6 +10,7 @@ tbls.forEach(tbl => {
     };
 });
 export const apiURL = {
+    GenSolLec:hostname +"/api/Solutions/generate",
     Regions:{
         list: hostname + "/api/Regions/list",
         edit: hostname + "/api/Regions/edit",

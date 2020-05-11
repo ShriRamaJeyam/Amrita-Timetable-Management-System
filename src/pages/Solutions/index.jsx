@@ -289,6 +289,13 @@ class Listing extends React.Component
                                             <TableCell>{entry.SolutionName}</TableCell>
                                             <TableCell>{(entry.Depreciated?"❌":"✅")}</TableCell>
                                             <TableCell>
+                                                <Button onClick={()=>{
+                                                    axios.post(apiURL.GenSolLec,{SolutionID:entry.id}).then(res=>{
+                                                        alert("Success");
+                                                    }).catch(res => {alert("Failed"+ res.response.data.error);})
+                                                }} variant="contained" color="primary">Generate</Button>
+                                            </TableCell>
+                                            <TableCell>
                                                 <Button href={app.list+"/"+entry.id+"/edit"} variant="contained" color="primary">Edit</Button>
                                             </TableCell>
                                         </TableRow>

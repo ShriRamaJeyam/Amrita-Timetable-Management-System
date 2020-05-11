@@ -55,7 +55,7 @@ class Create extends React.Component
                 CourseID:null,
                 TimeSlotSource:null,
                 RoomSource:null,
-                DaySource:"[]",
+                DaySource:"[1,2,3,4,5]",
                 TimeSlot:null,
                 Room:null,
                 Day:null,
@@ -636,7 +636,11 @@ class Listing extends React.Component
                                         <TableRow>
                                             <TableCell>{state.SolutionsMap[itm.SolutionID]}</TableCell>
                                             <TableCell>
-                                                {`${state.ProgramsMap[state.SemestersMap[state.SectionsMap[itm.SectionID].SemesterID].ProgramID]} ${state.DepartmentsMap[state.SectionsMap[itm.SectionID].DepartmentID]} ${state.SemestersMap[state.SectionsMap[itm.SectionID].SemesterID].SemesterNumber} ${state.SectionsMap[itm.SectionID].SectionName}`}
+                                            {
+                                                itm.SectionID % 2 ===0?
+                                                `${state.ProgramsMap[state.SemestersMap[state.SectionsMap[itm.SectionID].SemesterID].ProgramID]} ${state.DepartmentsMap[state.SectionsMap[itm.SectionID].DepartmentID]} ${state.SemestersMap[state.SectionsMap[itm.SectionID].SemesterID].SemesterNumber} ${state.SectionsMap[itm.SectionID].SectionName}`:
+                                                `${state.SectionGroupsMap[itm.SectionID]}`
+                                            }
                                             </TableCell>
                                             <TableCell>
                                                 {state.CoursesMap[itm.CourseID]}

@@ -478,8 +478,16 @@ class Listing extends React.Component
                             <Button color="primary" variant="contained" href={app.create}>Create New</Button>
                         </Grid> 
                         <Grid item>
-                            <TextField fullWidth={true} value={state.sectionfilt} label="Room Description" onChange={(event) => { this.onChangeHandler("sectionfilt",event.target.value,true)}} variant="filled"></TextField>
+                            <TextField fullWidth={true} value={state.sectionfilt} label="Section(filter)" onChange={(event) => { this.onChangeHandler("sectionfilt",event.target.value,true)}} variant="filled"></TextField>
                         </Grid>
+                        <Grid item>
+                            <Button onClick={()=>{
+                                axios.post(api.generate).then(res=>{
+                                    alert("Success");
+                                }).catch(res => {alert("Failed"+ res.response.data.error);})
+                            }} variant="contained" color="primary">Generate
+                            </Button>
+                         </Grid>
                 </Grid>
                 <TableContainer component={Paper}>
                     <Table>
