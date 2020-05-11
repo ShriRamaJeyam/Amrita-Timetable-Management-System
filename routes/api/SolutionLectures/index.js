@@ -6,22 +6,6 @@ var database = require("../../../modules/database");
 const { deepClone } = require("../../../modules/utils");
 var Table = database.tables.SolutionLectures;
 const { sequelize } = database;
-const { Sections, Semesters, SemesterRegistrations, Courses, Departments } = database.tables;
-router.post("/generate",async function(req,res){
-  var transaction = await sequelize.transaction();
-  try
-  {
-    
-  }
-  catch(ex)
-  {
-    res.status(400).json({error : ex.toString()});
-    if (transaction) 
-    {
-      await transaction.rollback();
-    }
-  }
-});
 
 
 router.post("/create",async function(req,res){
