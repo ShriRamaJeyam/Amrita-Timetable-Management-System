@@ -515,7 +515,7 @@ class Listing extends React.Component
                                                 <Button onClick={ () => { this.delete(itm.id) }} variant="contained" color="primary">Delete</Button>
                                             </TableCell>
                                             <TableCell>
-                                                <Button href={app.list+"/"+itm.id+"/edit"} variant="contained" color="primary">Edit</Button>
+                                                <Button href={app.list+"/"+itm.id+"/edit"} target="_blank" variant="contained" color="primary">Edit</Button>
                                             </TableCell>
                                         </TableRow>
                                     );
