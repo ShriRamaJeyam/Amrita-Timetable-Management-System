@@ -55,7 +55,7 @@ class Create extends React.Component
                 CourseID:null,
                 TimeSlotSource:null,
                 RoomSource:null,
-                DaySource:[],
+                DaySource:"[]",
                 TimeSlot:null,
                 Room:null,
                 Day:null,
@@ -69,7 +69,7 @@ class Create extends React.Component
                 axios.post(api.get,{id:id}).then(result => {
                     if(result.data.length !== 0)
                     {
-                        let data = result.data[0];
+                        let data = result.data;
                         this.setState({data,apiFulfilled:true});
                     }
                 }
@@ -186,8 +186,10 @@ class Create extends React.Component
         }));
     };
     onChangeHandler = (property,value,root) => {
-        if(value === "")
-        value = null;
+        if(property === "Parent" && value==="" )
+        {
+            value = null;
+        }
         if(root)
         {
             var temp ={};
@@ -227,6 +229,7 @@ class Create extends React.Component
         const { edit } = this.props;
         const { apiFulfilled,data,error,errorMessage,apiHits } = this.state;
         const { state } = this;
+        console.log(state);
         if( apiHits!==14 || (edit && !apiFulfilled) )
         {
             return null;
@@ -368,22 +371,61 @@ class Create extends React.Component
                     </Grid>
                     <Grid sm={3} fullWidth={true} item>
                         <FormControl fullWidth={true}  variant="filled">
-                            <InputLabel>RoomSource</InputLabel>
-                            <Select value={data.RoomSource} onChange={(event) => { this.onChangeHandler("RoomSource",event.target.value);}}>
-                                {state.RoomGroupsList.map(itm =>{
+                            <InputLabel>Day Source</InputLabel>
+                            <Select multiple value={JSON.parse(data.DaySource)} onChange={(event) => { this.onChangeHandler("DaySource",JSON.stringify(event.target.value));}}>
+                                {state.DayListsList.map(itm =>{
                                     //filters
                                     if(itm.Depreciated)
                                         return null;
                                     return(
-                                        <MenuItem value={itm.id}>{itm.RoomGroupName}</MenuItem>
+                                        <MenuItem value={itm.id}>{itm.DayName}</MenuItem>
                                     );
                                 })}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+                <Grid item sm={12} spacing={2} container direction="row">
+                <Grid sm={3} fullWidth={true} item>
+                        <FormControl fullWidth={true}  variant="filled">
+                            <InputLabel>TimeSlot</InputLabel>
+                            <Select value={data.TimeSlot} onChange={(event) => { this.onChangeHandler("TimeSlot",event.target.value);}}>
+                                {state.TimeSlotsList.map(itm =>{
+                                    //filters
+                                    if(itm.Depreciated)
+                                        return null;
+                                    return(
+                                        <MenuItem value={itm.id}>{itm.description}</MenuItem>
+                                    );
+                                })}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid sm={3} fullWidth={true} item>
+                        <FormControl fullWidth={true}  variant="filled">
+                            <InputLabel>Room</InputLabel>
+                            <Select value={data.Room} onChange={(event) => { this.onChangeHandler("Room",event.target.value);}}>
                                 {state.RoomsList.map(itm =>{
                                     //filters
                                     if(itm.Depreciated)
                                         return null;
                                     return(
                                         <MenuItem value={itm.id}>{`${itm.RoomDetail} ${itm.RoomDescription}`}</MenuItem>
+                                    );
+                                })}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid sm={3} fullWidth={true} item>
+                        <FormControl fullWidth={true}  variant="filled">
+                            <InputLabel>Day</InputLabel>
+                            <Select value={data.Day} onChange={(event) => { this.onChangeHandler("Day",event.target.value);}}>
+                                {state.DayListsList.map(itm =>{
+                                    //filters
+                                    if(itm.Depreciated)
+                                        return null;
+                                    return(
+                                        <MenuItem value={itm.id}>{itm.DayName}</MenuItem>
                                     );
                                 })}
                             </Select>
@@ -407,21 +449,79 @@ class Listing extends React.Component
             showDepreciated:false,
             data: []
         };
+        this.showDepreciatedHandler = this.showDepreciatedHandler.bind(this); 
+        this.apiHit = this.apiHit.bind(this);  
+        this.onChangeHandler =this.onChangeHandler.bind(this);
         [
             {
                 url:"Departments",
-                type:"both",
+                type:"map",
                 field:"DepartmentName"
             },
             {
                 url:"Programs",
-                type:"both",
+                type:"map",
                 field:"ProgramName"
             },
             {
                 url:"Semesters",
                 type:"map",
-                field:["SemesterNumber","ProgramID"]
+                field:["ProgramID","SemesterNumber"]
+            },
+            {
+                url:"Sections",
+                type:"both",
+                field:["SectionName","SemesterID","DepartmentID"]
+            },
+            {
+                url:"Solutions",
+                type:"both",
+                field:"SolutionName"
+            },
+            {
+                url:"TimeSlotGroups",
+                type:"both",
+                field:"TimeSlotGroupName"
+            },
+            {
+                url:"TimeSlots",
+                type:"both",
+                field:"description"
+            },
+            {
+                url:"Teachers",
+                type:"both",
+                field:"TeacherName"
+            },
+            {
+                url:"TeacherGroups",
+                type:"both",
+                field:"TeacherGroupName"
+            },
+            {
+                url:"RoomGroups",
+                type:"both",
+                field:"RoomGroupName"
+            },
+            {
+                url:"Rooms",
+                type:"both",
+                field:["RoomName","RoomDetail"]
+            },
+            {
+                url:"DayLists",
+                type:"both",
+                field:"DayName"
+            },
+            {
+                url:"Courses",
+                type:"both",
+                field:"CourseName"
+            },
+            {
+                url:"SectionGroups",
+                type:"both",
+                field:"SectionGroupName"
             }
         ].forEach(req =>{
             axios.post(apiURL[req.url].list,{}).then(result => {
@@ -458,9 +558,6 @@ class Listing extends React.Component
                 this.apiHit();
             }
         });
-        this.showDepreciatedHandler = this.showDepreciatedHandler.bind(this); 
-        this.apiHit = this.apiHit.bind(this);  
-        this.onChangeHandler =this.onChangeHandler.bind(this);
     }
     onChangeHandler = (property,value,root) => {
         
@@ -485,11 +582,19 @@ class Listing extends React.Component
             apiHits : state.apiHits + 1 
         }));
     };
+    delete = (id) => {
+        axios.post(api.delete,{ id }).then(result => {
+            // eslint-disable-next-line no-restricted-globals
+            location.reload();
+        });
+    }
     render()
     {
         const { data,showDepreciated,apiHits} = this.state;
         const { state } = this;
-        if(apiHits!==4)
+        const AllTS= {...(state.TimeSlotsMap), ...(state.TimeSlotGroupsMap)};
+        console.log(AllTS);
+        if(apiHits!==15)
         {
             return null;
         }
@@ -510,7 +615,11 @@ class Listing extends React.Component
                         <TableHead>
                             <TableRow>
                                 <TableCell>Solution</TableCell>
+                                <TableCell>Section</TableCell>
+                                <TableCell>Course</TableCell>
+                                <TableCell>TimeSrc</TableCell>
                                 <TableCell>Live</TableCell>
+                                <TableCell>Delete</TableCell>
                                 <TableCell>
                                    Edit
                                 </TableCell>
@@ -518,17 +627,29 @@ class Listing extends React.Component
                         </TableHead>
                         <TableBody>
                             {
-                                data.map((entry)=>{
-                                    if(!showDepreciated && entry.Depreciated)
+                                data.map((itm)=>{
+                                    if(!showDepreciated && itm.Depreciated)
                                     {
                                         return null;
                                     }
                                     return (
                                         <TableRow>
-                                            <TableCell>{entry.SolutionName}</TableCell>
-                                            <TableCell>{(entry.Depreciated?"❌":"✅")}</TableCell>
+                                            <TableCell>{state.SolutionsMap[itm.SolutionID]}</TableCell>
                                             <TableCell>
-                                                <Button href={app.list+"/"+entry.id+"/edit"} variant="contained" color="primary">Edit</Button>
+                                                {`${state.ProgramsMap[state.SemestersMap[state.SectionsMap[itm.SectionID].SemesterID].ProgramID]} ${state.DepartmentsMap[state.SectionsMap[itm.SectionID].DepartmentID]} ${state.SemestersMap[state.SectionsMap[itm.SectionID].SemesterID].SemesterNumber} ${state.SectionsMap[itm.SectionID].SectionName}`}
+                                            </TableCell>
+                                            <TableCell>
+                                                {state.CoursesMap[itm.CourseID]}
+                                            </TableCell>
+                                            <TableCell>
+                                                {AllTS[itm.TimeSlotSource]}
+                                            </TableCell>
+                                            <TableCell>{(itm.Depreciated?"❌":"✅")}</TableCell>
+                                            <TableCell>
+                                                <Button onClick={ () => { this.delete(itm.id) }} variant="contained" color="primary">Delete</Button>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Button href={app.list+"/"+itm.id+"/edit"} variant="contained" target="_blank" color="primary">Edit</Button>
                                             </TableCell>
                                         </TableRow>
                                     );

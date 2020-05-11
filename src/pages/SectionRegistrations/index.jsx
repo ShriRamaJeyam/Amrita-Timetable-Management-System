@@ -346,7 +346,8 @@ class Listing extends React.Component
         this.state = {
             apiHits:0,
             showDepreciated:false,
-            data: []
+            data: [],
+            sectionfilt:""
         };
         axios.post(api.list,{}).then(result => {
             if(result.data)
@@ -355,7 +356,8 @@ class Listing extends React.Component
                 this.apiHit();
             }
         });
-        this.showDepreciatedHandler = this.showDepreciatedHandler.bind(this);  
+        this.showDepreciatedHandler = this.showDepreciatedHandler.bind(this); 
+        this.onChangeHandler = this.onChangeHandler.bind(this); 
         this.apiHit = this.apiHit.bind(this);
         [
             {
@@ -440,6 +442,20 @@ class Listing extends React.Component
             apiHits : state.apiHits + 1 
         }));
     };
+    onChangeHandler = (property,value,root) => {
+        if(root)
+        {
+            var temp ={};
+            temp[property]=value;
+            this.setState(temp);
+        }
+        else
+        {
+            let data = this.state.data;
+            data[property] = value;
+            this.setState({data});
+        }
+    };
     delete = (id) => {
         axios.post(api.delete,{ id }).then(result => {
             // eslint-disable-next-line no-restricted-globals
@@ -457,11 +473,13 @@ class Listing extends React.Component
         }
         return (
             <Grid container spacing={3} direction="column">
-                <Grid item spacing={3} direction="row">
-                        <Grid>
+                <Grid item spacing={3} direction="row" alignItems="center" container>
+                        <Grid item>
                             <Button color="primary" variant="contained" href={app.create}>Create New</Button>
                         </Grid> 
-
+                        <Grid item>
+                            <TextField fullWidth={true} value={state.sectionfilt} label="Room Description" onChange={(event) => { this.onChangeHandler("sectionfilt",event.target.value,true)}} variant="filled"></TextField>
+                        </Grid>
                 </Grid>
                 <TableContainer component={Paper}>
                     <Table>
@@ -480,6 +498,9 @@ class Listing extends React.Component
                         <TableBody>
                             {
                                 data.map((itm)=>{
+                                    var sec= `${state.ProgramsMap[state.SemestersMap[state.SectionsMap[itm.SectionID].SemesterID].ProgramID]} ${state.DepartmentsMap[state.SectionsMap[itm.SectionID].DepartmentID]} ${state.SemestersMap[state.SectionsMap[itm.SectionID].SemesterID].SemesterNumber} ${state.SectionsMap[itm.SectionID].SectionName}`;
+                                    if(sec.toLowerCase().indexOf(state.sectionfilt.toLowerCase())=== -1)
+                                        return null;
                                     return (
                                         <TableRow>
                                             <TableCell>
