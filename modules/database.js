@@ -717,7 +717,7 @@ SolutionLectures.init({
         allowNull : false
     },
     DaySource : {
-        type : Sequelize.INTEGER,
+        type : Sequelize.TEXT,
         allowNull : false
     },
     TimeSlot : {
