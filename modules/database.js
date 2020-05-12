@@ -149,7 +149,7 @@ TimeSlots.init({
                 {
                     throw new Error("Break cant end before it can start");
                 }
-                else if(this.startBreak < this.starter || this.endBreak > this.ender )
+                else if(this.startBreak <= this.starter || this.endBreak >= this.ender )
                 {
                     throw new Error("Invalid break time.");
                 }
