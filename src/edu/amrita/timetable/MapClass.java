@@ -32,5 +32,8 @@ public class MapClass
 	public static Set<Integer> foodConflict = new TreeSet<Integer>();
 	public static Set<Integer> foodCompConflict = new TreeSet<Integer>();
 
-	public static int bfr=1000;
+	public static int bfr=5000;
+	public static int hard=0,soft=0;
+	public static int Maxhard=-100000000,Maxsoft=-100000000;
+
 }

@@ -5,22 +5,49 @@ import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.core.impl.score.director.easy.EasyScoreCalculator;
 public class ScoreCalculator implements EasyScoreCalculator<Solver> 
 {
-	 @Override
+	 private static Map<Integer,Lecture> LectureMap;
+	 private Integer GetSlot(Lecture l)
+	 {
+	 	if(l.Parent ==  null)
+		{
+			return l.TimeSlot;
+		}
+	 	else
+		{
+			return LectureMap.get(l.Parent).TimeSlot;
+		}
+	 }
+	private Integer GetDay(Lecture lec)
+	{
+		if(lec.Parent ==  null)
+		{
+			return lec.Day;
+		}
+		else
+		{
+			return LectureMap.get(lec.Parent).Day;
+		}
+	}
+	@Override
 	 public HardSoftScore calculateScore(Solver TimeTable) 
 	 {
+		 MapClass.hard = 0;
+		 MapClass.soft = 0;
 		 Integer hard=0,soft=0;
 		 List<Lecture> lst = TimeTable.leclst;
-		 Map<Integer,Lecture> LectureMap = new TreeMap<Integer, Lecture>();
+		 LectureMap = new TreeMap<Integer, Lecture>();
 		 Map<Integer,Map<Integer,List<Lecture> > > SectionLectures = new TreeMap<Integer,Map<Integer,List<Lecture> > >();
 		 Map<Integer,Map<Integer,List<Lecture> > > TeacherLectures = new TreeMap<Integer,Map<Integer,List<Lecture> > >();
 		 Map<Integer,Map<Integer,List<Lecture> > > RoomLectures = new TreeMap<Integer,Map<Integer,List<Lecture> > >();
 
 		 //Preprocessing
 		 {
-			for(Lecture l: lst)
+		 	for(Lecture l: lst)
 			{
 				LectureMap.put(l.id,l);
-
+			}
+			for(Lecture l: lst)
+			{
 				// Section
 				if( l.Parent == null )
 				for(Integer i:l.Section)
@@ -32,12 +59,12 @@ public class ScoreCalculator implements EasyScoreCalculator<Solver>
 
 					Map<Integer, List<Lecture> > section = SectionLectures.get(i);
 
-					if(!section.containsKey(l.Day))
+					if(!section.containsKey(GetDay(l)))
 					{
-						section.put(l.Day,new ArrayList<Lecture>());
+						section.put(GetDay(l),new ArrayList<Lecture>());
 					}
 
-					section.get(l.Day).add(l);
+					section.get(GetDay(l)).add(l);
 				}
 
 				//Teachers
@@ -53,28 +80,28 @@ public class ScoreCalculator implements EasyScoreCalculator<Solver>
 
 						Map<Integer, List<Lecture> > teacher = TeacherLectures.get(i);
 
-						if(!teacher.containsKey(l.Day))
+						if(!teacher.containsKey(GetDay(l)))
 						{
-							teacher.put(l.Day,new ArrayList<Lecture>());
+							teacher.put(GetDay(l),new ArrayList<Lecture>());
 						}
-						teacher.get(l.Day).add(l);
+						teacher.get(GetDay(l)).add(l);
 					}
 
 				}
 				if(l.Room != 0)
 				{
-					if (!TeacherLectures.containsKey(l.Room))
+					if (!RoomLectures.containsKey(l.Room))
 					{
-						SectionLectures.put(l.Room, new TreeMap<Integer, List<Lecture>>());
+						RoomLectures.put(l.Room, new TreeMap<Integer, List<Lecture>>());
 					}
 
-					Map<Integer, List<Lecture>> room = SectionLectures.get(l.Room);
-
-					if (!room.containsKey(l.Day)) {
-						room.put(l.Day, new ArrayList<Lecture>());
+					Map<Integer, List<Lecture>> room = RoomLectures.get(l.Room);
+					if (!room.containsKey(GetDay(l)))
+					{
+						room.put(GetDay(l), new ArrayList<Lecture>());
 					}
 
-					room.get(l.Day).add(l);
+					room.get(GetDay(l)).add(l);
 				}
 
 			}
@@ -83,17 +110,20 @@ public class ScoreCalculator implements EasyScoreCalculator<Solver>
 		 for(Map.Entry<Integer,Map<Integer,List<Lecture> > > section:SectionLectures.entrySet())
 		 {
 		 	int LateLunchDays = 0;
+		 	Set<Integer> numRooms = new TreeSet<Integer>();
 			for(Map.Entry<Integer,List<Lecture> > day : section.getValue().entrySet())
 			{
 				boolean lateLunch = false,lunchComp = true;
 				List<Lecture> LecLst = day.getValue();
 				for(Lecture first : LecLst)
 				{
-					if(MapClass.foodConflict.contains(first.TimeSlot))
+
+					numRooms.add(first.Room);
+					if(MapClass.foodConflict.contains(GetSlot(first)))
 					{
 						lateLunch = true;
 					}
-					if(MapClass.foodCompConflict.contains(first.TimeSlot))
+					if(MapClass.foodCompConflict.contains(GetSlot(first)))
 					{
 						lunchComp = false;
 					}
@@ -101,12 +131,13 @@ public class ScoreCalculator implements EasyScoreCalculator<Solver>
 					{
 						if(first != second)
 						{
-							if(MapClass.TimeSlotConflict.get(first.TimeSlot).contains(second.TimeSlot))
+							if(MapClass.TimeSlotConflict.get(GetSlot(first)).contains(GetSlot(second)))
 							{
 								PenaltyConstants.OVERLAP.SubstractScore(hard,soft);
 							}
-							if(MapClass.TimeSlotConflict.get(0 - first.TimeSlot).contains(second.TimeSlot) && (!MapClass.RoomRegionMap.get(first.Room).equals(MapClass.RoomRegionMap.get(second.Room))))
+							if(MapClass.TimeSlotConflict.get(0 - GetSlot(first)).contains(GetSlot(second)))
 							{
+								if (!MapClass.RoomRegionMap.get(first.Room).equals(MapClass.RoomRegionMap.get(second.Room)))
 								PenaltyConstants.REGION_GAP.SubstractScore(hard,soft);
 							}
 							if(first.Course.equals(second.Course))
@@ -123,6 +154,7 @@ public class ScoreCalculator implements EasyScoreCalculator<Solver>
 						}
 					}
 				}
+				MapClass.soft -= numRooms.size() * 50;
 				if(lateLunch)
 				{
 					LateLunchDays += 1;
@@ -149,21 +181,21 @@ public class ScoreCalculator implements EasyScoreCalculator<Solver>
 				 {
 					 for(Lecture second : LecLst)
 					 {
-						 if(MapClass.foodConflict.contains(first.TimeSlot))
+						 if(MapClass.foodConflict.contains(GetSlot(first)))
 						 {
 							 lateLunch = true;
 						 }
-						 if(MapClass.foodCompConflict.contains(first.TimeSlot))
+						 if(MapClass.foodCompConflict.contains(GetSlot(first)))
 						 {
 							 lunchComp = false;
 						 }
 						 if(first != second)
 						 {
-							 if(MapClass.TimeSlotConflict.get(first.TimeSlot).contains(second.TimeSlot))
+							 if(MapClass.TimeSlotConflict.get(GetSlot(first)).contains(GetSlot(second)))
 							 {
 								 PenaltyConstants.OVERLAP.SubstractScore(hard,soft);
 							 }
-							 if(MapClass.TimeSlotConflict.get((-1) - first.TimeSlot).contains(second.TimeSlot))
+							 if(MapClass.TimeSlotConflict.get((-1) - GetSlot(first)).contains(GetSlot(second)))
 							 {
 								 PenaltyConstants.REGION_GAP.SubstractScore(hard,soft);
 							 }
@@ -182,6 +214,7 @@ public class ScoreCalculator implements EasyScoreCalculator<Solver>
 			 if(LateLunchDays > 1)
 			 {
 				 PenaltyConstants.MANY_DAY_NOLUNCH.SubstractScore(hard,soft);
+
 			 }
 		 }
 		 for(Map.Entry<Integer,Map<Integer,List<Lecture> > > room:RoomLectures.entrySet())
@@ -195,7 +228,7 @@ public class ScoreCalculator implements EasyScoreCalculator<Solver>
 					 {
 						 if(first != second)
 						 {
-							 if(MapClass.TimeSlotConflict.get(first.TimeSlot).contains(second.TimeSlot))
+							 if(MapClass.TimeSlotConflict.get(GetSlot(first)).contains(GetSlot(second)))
 							 {
 								 PenaltyConstants.OVERLAP.SubstractScore(hard,soft);
 							 }
@@ -204,13 +237,23 @@ public class ScoreCalculator implements EasyScoreCalculator<Solver>
 				 }
 			 }
 		 }
-		 soft -= 50 * RoomLectures.size();
+		 MapClass.soft -= 50 * RoomLectures.size();
 		 MapClass.bfr--;
+		 if(MapClass.Maxhard <= MapClass.hard)
+		 {
+			 MapClass.Maxhard = MapClass.hard;
+			 if(MapClass.Maxsoft<= MapClass.soft)
+			 {
+				 MapClass.Maxsoft = MapClass.soft;
+			 }
+		 }
 		 if(MapClass.bfr==0)
 		 {
-			 MapClass.bfr=1000;
-			 System.out.println("{"+hard+","+soft+"}");
+			 MapClass.bfr=5000;
+			 System.out.println("{"+MapClass.hard+","+MapClass.soft+"} ->"+"{"+MapClass.Maxhard+","+MapClass.Maxsoft+"}");
 		 }
-		 return HardSoftScore.of(hard, soft);
+
+		 return HardSoftScore.of(MapClass.hard, MapClass.soft);
+
 	 }
 }

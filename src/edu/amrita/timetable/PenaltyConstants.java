@@ -2,7 +2,7 @@ package edu.amrita.timetable;
 
 public class PenaltyConstants
 {
-    public static Penalty OVERLAP = new Penalty(50,0);
+    public static Penalty OVERLAP = new Penalty(500,0);
     public static Penalty REGION_GAP = new Penalty(40,0);
     public static Penalty NO_REPEAT_SAME_SLOT = new Penalty(20,0);
     public static Penalty NO_REPEAT_DIFF_SLOT = new Penalty( 0,500);
