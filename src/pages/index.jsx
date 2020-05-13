@@ -80,10 +80,13 @@ export default function Homepage()
                         <Button fullWidth={true} color="primary"  variant="contained" href="/SolutionLectures/">Solution Lectures</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
-                        <Button fullWidth={true} color="primary"  variant="contained" href="/Settings/">Faculty Preferences</Button>
+                        <Button fullWidth={true} color="primary" variant="contained" href="/StudentTimetable/">Student Timetables</Button>
                     </Grid>
                     <Grid item fullWidth={true}>
-                        <Button fullWidth={true} color="primary" variant="contained" href="/StudentTimetable/">Student Timetables</Button>
+                        <Button fullWidth={true} color="primary" variant="contained" href="/RoomTimetable/">Room Timetables</Button>
+                    </Grid>
+                    <Grid item fullWidth={true}>
+                        <Button fullWidth={true} color="primary" variant="contained" href="/TeacherTimetable/">Teacher Timetables</Button>
                     </Grid>
                 </Grid>
             </Grid>

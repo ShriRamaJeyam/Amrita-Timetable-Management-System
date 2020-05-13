@@ -1,4 +1,4 @@
-const hostname = "http://localhost:4000";
+export const hostname = "http://localhost:4000";
 var tbls = ["TeacherGroups","RoomGroups","Sections","Semesters","SectionGroups","Courses","Solutions"];
 var tmp = {};
 tbls.forEach(tbl => {

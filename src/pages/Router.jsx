@@ -29,7 +29,8 @@ import Electives from "./Electives/index";
 import SectionRegistrations from "./SectionRegistrations/index";
 import Solutions from "./Solutions/index";
 import SolutionLectures from "./SolutionLectures/index";
-import StudentTimetable from "./StudentTimetable/index"
+import StudentTimetable from "./StudentTimetable/index";
+import TimeTablePage from "../components/TimeTable";
 const tableMap = { 
     TeacherGroups,
     RoomGroups,
@@ -74,7 +75,7 @@ const Router = () => {
             <Route path="/TimeSlotGroups" component={() => {return (<ListingTimeSlotGroups />);}} />
             <Route path="/SemesterRegistrations" component={() => {return (<SemesterRegistrations />);}} />
             {
-                ["TeacherGroups","RoomGroups","Sections","Semesters","SectionGroups","Courses","Electives","SectionRegistrations","Solutions","SolutionLectures","StudentTimetable"].map((tbl,idx) => {
+                ["TeacherGroups","RoomGroups","Sections","Semesters","SectionGroups","Courses","Electives","SectionRegistrations","Solutions","SolutionLectures"].map((tbl,idx) => {
                     const { Create, Listing } = tableMap[tbl];
                     return ([
                         <Route path={"/"+tbl+"/:_id/edit"} component={() => {return (<Create edit={true} />);}} />,
@@ -83,6 +84,41 @@ const Router = () => {
                     ]);
                 })
             }
+            
+            <Route path="/StudentTimetable" component={() => {
+                return (<TimeTablePage
+                    isSection={true}
+                    FieldName="Section"
+                    sqliser={(a,b) =>{
+                        return `SELECT * from SolutionLectures where SolutionID = ${a} and SectionID = ${b} or SectionID in (select DISTINCT(SectionGroupID) from SectionGroupMembers where SectionID=${b});`;
+                    }}
+                    seleSQL={`(Select d.id as id ,CONCAT(b.ProgramName,' ',c.SemesterNumber,' ',a.DepartmentName,' ',d.SectionName) as [name] from Departments a,Programs b,Semesters c, Sections d where d.SemesterID = c.id and c.ProgramID= b.id and d.DepartmentID=a.id)`}
+                />);
+            }} />
+            <Route path="/TeacherTimetable" component={() => {
+                return(<TimeTablePage
+                isSection={false}
+                FieldName="Teacher"
+                sqliser={(a,b) =>{
+                    return `SELECT * from SolutionLectures where SolutionID = ${a} and Faculty = ${b} or Faculty in (select DISTINCT(TeacherGroupID) from TeacherGroupMembers where TeacherID=${b});`;
+                }}
+                seleSQL="select id,TeacherName as [name] from Teachers;"
+                />);
+            }} />
+            <Route path="/RoomTimetable" component={() => {
+                return(<TimeTablePage
+                isSection={false}
+                FieldName="Room"
+                sqliser={(a,b) =>{
+                    return `select * from SolutionLectures where Room = ${b} and SolutionID = ${a};`;
+                }}
+                seleSQL="select id,CONCAT(RoomDescription,'',CONCAT(' ',Wing,'-',FloorNo,RIGHT(CONCAT('000',RoomNo),2),'')) as [name] from Rooms;"
+                />);
+            }} />
+                
+
+
+
             <Route path="/Settings" component={()=>{return (<Settings />);}} />
             <Route path="/" component={()=>{return (<Homepage />);}} />
             <Redirect to="/" />

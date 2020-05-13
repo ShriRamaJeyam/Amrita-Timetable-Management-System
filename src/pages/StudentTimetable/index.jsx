@@ -1,7 +1,7 @@
 // React
 import React from "react";
 import { withRouter } from "react-router-dom";
-import * as Styled from "styled-components";
+import styled from 'styled-components'
 // Material UI
 import { 
     TextField,
@@ -202,11 +202,11 @@ class Create extends React.Component
             <Grid item>
             {
                 true &&
-                (
-                    <div style={{width:"1300px",height:"550px"}}>
-                        <div style={{height:"110px",border:"1px solid black",display:"flex"}}>
-                            <div style={{height:"100%",width:"100px",border:"1px solid black"}}>Monday</div>
-                            <div style={{height:"100%",border:"1px solid black",position:"relative",left:"127px",width:"127px"}}>
+                (   
+                    <div style={{width:"1300px"}}>
+                        <div style={{border:"1px solid black",minHeight:"200px",display:"flex",position:"relative"}}>
+                            <div style={{width:"100px",border:"1px solid black",position:"absolute",top:"0px",bottom:"0px",height:"200px"}}>Monday</div>
+                            <div style={{height:"100%",border:"1px solid black",position:"absolute",left:"100px",width:"127px",top:"0px",bottom:"0px",display:"block"}}>
                                 15CSE402 
                                 <br />
                                 C.Shanmuga Velayutham
